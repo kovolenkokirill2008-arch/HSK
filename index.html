@@ -88,6 +88,17 @@ button:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
 .bg{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 4px;text-align:center;opacity:.4}
 .bg.on{opacity:1;border-color:var(--ok)}.bg b{display:block;font-size:20px}.bg span{font-size:12px;color:var(--mut)}
 .chips.cats{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-bottom:4px}.cats .chip{flex:none}
+.ly{display:inline-flex;gap:6px;vertical-align:middle;margin:4px}.ly.c{flex-direction:column}
+.sl{min-width:68px;height:68px;padding:0 6px;border:2px dashed var(--line);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:44px;background:var(--card)}
+.sl.f{border:2px solid var(--ok)}.sl.q{border:2px solid var(--pri);color:var(--pri)}
+.pzw{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;margin:18px 0;gap:4px}.wc{font-size:64px}.wc.ok{color:var(--ok)}
+.tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}.tiles .opt{font-size:34px}
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}.mc{display:flex;flex-direction:column;gap:10px}
+.mtile{min-height:68px;border:2px solid var(--line);border-bottom-width:4px;background:var(--card);color:var(--ink);border-radius:14px;padding:10px 6px;font:500 17px inherit;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.mtile b{font-weight:600}.mtile .mh{font-size:28px}.mtile small{font-size:14px;color:var(--mut)}
+.mtile.sel{border-color:var(--pri);background:color-mix(in srgb,var(--pri) 12%,var(--card))}
+.mtile.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 18%,var(--card));opacity:.55}
+.mtile.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 18%,var(--card))}
 </style></head><body>
 <div id="app">
 <nav><button data-a="tab" data-v="cards">Карточки</button><button data-a="tab" data-v="quiz">Тест</button><button data-a="tab" data-v="write">Письмо</button><button data-a="tab" data-v="speak">Речь</button><button data-a="tab" data-v="words">Слова</button><button data-a="tab" data-v="stats">Прогресс</button></nav><div id="bar"></div>
@@ -121,7 +132,7 @@ function say(i){
 }
 const dirChip=()=>`<button class="chip" data-a="dir">${S.dir?'Рус → 汉':'汉 → Рус'}</button>`+catChip();
 const all=()=>D.map((_,i)=>i);
-const CATN=["Семья и люди", "Тело и здоровье", "Еда и напитки", "Одежда и цвета", "Дом и быт", "Город и транспорт", "Место и направления", "Школа и учёба", "Работа и деньги", "Время и даты", "Природа и животные", "Числа и меры", "Отдых и спорт", "Качества и чувства", "Действия", "Вежливость и фразы", "Абстрактные слова", "Служебные слова"],CATI=[0, 17, 13, 14, 12, 13, 11, 17, 0, 17, 3, 11, 7, 14, 9, 16, 8, 8, 8, 3, 1, 7, 4, 6, 5, 17, 17, 1, 17, 17, 12, 17, 16, 14, 12, 17, 0, 5, 4, 15, 17, 17, 2, 2, 14, 10, 17, 2, 17, 13, 14, 12, 5, 3, 7, 5, 2, 14, 14, 14, 5, 4, 17, 3, 5, 9, 7, 17, 13, 17, 13, 14, 12, 4, 14, 13, 0, 14, 13, 2, 17, 17, 14, 17, 17, 17, 4, 14, 13, 0, 6, 5, 5, 17, 9, 4, 4, 4, 12, 8, 6, 16, 9, 7, 10, 17, 7, 13, 17, 12, 13, 15, 13, 17, 11, 1, 17, 0, 1, 11, 1, 14, 2, 13, 4, 14, 13, 17, 5, 9, 9, 2, 6, 7, 4, 17, 1, 9, 13, 13, 14, 0, 17, 14, 17, 17, 17, 5, 11, 8, 5, 8, 10, 12, 10, 14, 16, 17, 8, 5, 2, 17, 17, 14, 17, 17, 17, 0, 13, 7, 13, 2, 9, 2, 17, 10, 3, 7, 17, 3, 6, 5, 10, 4, 12, 13, 15, 10, 14, 3, 14, 7, 14, 8, 5, 17, 5, 2, 17, 16, 17, 11, 14, 9, 4, 14, 13, 17, 1, 14, 14, 7, 8, 1, 14, 7, 14, 5, 14, 14, 12, 9, 0, 14, 14, 14, 9, 14, 6, 17, 14, 8, 11, 9, 13, 17, 14, 7, 14, 14, 2, 14, 14, 14, 14, 7, 1, 13, 17, 14, 9, 7, 0, 4, 1, 13, 3, 8, 13, 13, 2, 14, 3, 13, 7, 17, 13, 13, 6, 14, 6, 16, 7, 1, 7, 11, 17, 14, 0, 11, 11, 5, 5, 5, 3, 0, 10, 17, 17, 8, 8, 13, 13, 13, 10, 3, 17, 15, 17, 0, 4, 11, 2, 2, 2, 14, 9, 0, 14, 17, 17, 0, 6, 0, 13, 13, 17, 14, 0, 9, 7, 13, 10, 0, 2, 14, 0, 0, 12, 2, 6, 1, 12, 0, 2, 8, 5, 13, 2, 2, 7, 11, 0, 17, 17, 12, 13, 4, 11, 7, 8, 6, 13, 10, 15, 9, 14, 9, 3, 17, 14, 13, 13, 0, 14, 14, 13, 9, 13, 17, 11, 4, 5, 6, 8, 8, 9, 13, 0, 1, 17, 1, 13, 9, 16, 11, 9, 9, 14, 17, 16, 16, 4, 4, 1, 7, 13, 0, 10, 7, 4, 17, 2, 2, 16, 4, 14, 8, 11, 14, 17, 9, 17, 0, 0, 17, 17, 10, 2, 17, 1, 12, 7, 14, 7, 10, 2, 17, 12, 14, 0, 0, 14, 1, 17, 7, 1, 6, 14, 14, 12, 2, 9, 11, 14, 15, 17, 17, 17, 17, 7, 7, 7, 0, 0, 11, 6, 2, 14, 16, 4, 4, 4, 14, 6, 9, 10, 9, 17, 0, 9, 2, 13, 14, 14, 6, 17, 13, 0, 9, 13, 13, 7, 17, 3, 7, 15, 13, 12, 2, 8, 9, 5, 0, 12, 10, 12, 14, 14, 7, 7, 7, 10, 3, 1, 1, 2, 14, 1, 14, 0, 17, 11, 3, 1, 1, 17, 11, 9, 17, 9, 9, 14, 17, 4, 17, 17, 17, 17, 16, 10, 17, 12, 5, 17, 14, 14, 12, 12, 17, 13, 17, 6, 2, 14, 8, 6, 14, 9, 10, 17, 10, 12, 14, 17, 15, 9, 17, 17, 14, 17, 0, 13, 14, 14, 12, 4, 17, 17, 17, 17, 14, 17, 5, 6, 9, 17, 17, 13, 9, 17, 14, 15, 14, 14, 4, 7, 7, 17, 5, 17, 14, 17, 9, 9, 6, 14, 14, 7, 16];let wcat='';
+const CATN=["Семья и люди", "Тело и здоровье", "Еда и напитки", "Одежда и цвета", "Дом и быт", "Город и транспорт", "Место и направления", "Школа и учёба", "Работа и деньги", "Время и даты", "Природа и животные", "Числа и меры", "Отдых и спорт", "Качества и чувства", "Действия", "Вежливость и фразы", "Абстрактные слова", "Служебные слова"],CATI=[0, 17, 13, 14, 12, 13, 11, 17, 0, 17, 3, 11, 7, 14, 9, 16, 8, 8, 8, 3, 1, 7, 4, 6, 5, 17, 17, 1, 17, 17, 12, 17, 16, 14, 12, 17, 0, 5, 4, 15, 17, 17, 2, 2, 14, 10, 17, 2, 17, 13, 14, 12, 5, 3, 7, 5, 2, 14, 14, 14, 5, 4, 17, 3, 5, 9, 7, 17, 13, 17, 13, 14, 12, 4, 14, 13, 0, 14, 13, 2, 17, 17, 14, 17, 17, 17, 4, 14, 13, 0, 6, 5, 5, 17, 9, 4, 4, 4, 12, 8, 6, 16, 9, 7, 10, 17, 7, 13, 17, 12, 13, 15, 13, 17, 11, 1, 17, 0, 1, 11, 1, 14, 2, 13, 4, 14, 13, 17, 5, 9, 9, 2, 6, 7, 4, 17, 1, 9, 13, 13, 14, 0, 17, 14, 17, 17, 17, 5, 11, 8, 5, 8, 10, 12, 10, 14, 16, 17, 8, 5, 2, 17, 17, 14, 17, 17, 17, 0, 13, 7, 13, 2, 9, 2, 17, 10, 3, 7, 17, 3, 6, 5, 10, 4, 12, 13, 15, 10, 14, 3, 14, 7, 14, 8, 5, 17, 5, 2, 17, 16, 17, 11, 14, 9, 4, 14, 13, 17, 1, 14, 14, 7, 8, 1, 14, 7, 14, 5, 14, 14, 12, 9, 0, 14, 14, 14, 9, 14, 6, 17, 14, 8, 11, 9, 13, 17, 14, 7, 14, 14, 2, 14, 14, 14, 14, 7, 1, 13, 17, 14, 9, 7, 0, 4, 1, 13, 3, 8, 13, 13, 2, 14, 3, 13, 7, 17, 13, 13, 6, 14, 6, 16, 7, 1, 7, 11, 17, 14, 0, 11, 11, 5, 5, 5, 3, 0, 10, 17, 17, 8, 8, 13, 13, 13, 10, 3, 17, 15, 17, 0, 4, 11, 2, 2, 2, 14, 9, 0, 14, 17, 17, 0, 6, 0, 13, 13, 17, 14, 0, 9, 7, 13, 10, 0, 2, 14, 0, 0, 12, 2, 6, 1, 12, 0, 2, 8, 5, 13, 2, 2, 7, 11, 0, 17, 17, 12, 13, 4, 11, 7, 8, 6, 13, 10, 15, 9, 14, 9, 3, 17, 14, 13, 13, 0, 14, 14, 13, 9, 13, 17, 11, 4, 5, 6, 8, 8, 9, 13, 0, 1, 17, 1, 13, 9, 16, 11, 9, 9, 14, 17, 16, 16, 4, 4, 1, 7, 13, 0, 10, 7, 4, 17, 2, 2, 16, 4, 14, 8, 11, 14, 17, 9, 17, 0, 0, 17, 17, 10, 2, 17, 1, 12, 7, 14, 7, 10, 2, 17, 12, 14, 0, 0, 14, 1, 17, 7, 1, 6, 14, 14, 12, 2, 9, 11, 14, 15, 17, 17, 17, 17, 7, 7, 7, 0, 0, 11, 6, 2, 14, 16, 4, 4, 4, 14, 6, 9, 10, 9, 17, 0, 9, 2, 13, 14, 14, 6, 17, 13, 0, 9, 13, 13, 7, 17, 3, 7, 15, 13, 12, 2, 8, 9, 5, 0, 12, 10, 12, 14, 14, 7, 7, 7, 10, 3, 1, 1, 2, 14, 1, 14, 0, 17, 11, 3, 1, 1, 17, 11, 9, 17, 9, 9, 14, 17, 4, 17, 17, 17, 17, 16, 10, 17, 12, 5, 17, 14, 14, 12, 12, 17, 13, 17, 6, 2, 14, 8, 6, 14, 9, 10, 17, 10, 12, 14, 17, 15, 9, 17, 17, 14, 17, 0, 13, 14, 14, 12, 4, 17, 17, 17, 17, 14, 17, 5, 6, 9, 17, 17, 13, 9, 17, 14, 15, 14, 14, 4, 7, 7, 17, 5, 17, 14, 17, 9, 9, 6, 14, 14, 7, 16];let wcat='';const DEC={"举":["⿱","兴","扌"],"云":["⿱","二","厶"],"些":["⿱","此","二"],"京":["⿳","亠","口","小"],"什":["⿰","亻","十"],"从":["⿰","人","人"],"他":["⿰","亻","也"],"们":["⿰","亻","门"],"件":["⿰","亻","牛"],"休":["⿰","亻","木"],"会":["⿱","人","云"],"但":["⿰","亻","旦"],"位":["⿰","亻","立"],"低":["⿰","亻","氐"],"住":["⿰","亻","主"],"体":["⿰","亻","本"],"作":["⿰","亻","乍"],"你":["⿰","亻","尔"],"使":["⿰","亻","吏"],"便":["⿰","亻","更"],"信":["⿰","亻","言"],"候":["⿰","亻","矦"],"借":["⿰","亻","昔"],"做":["⿰","亻","故"],"健":["⿰","亻","建"],"像":["⿰","亻","象"],"元":["⿱","二","儿"],"公":["⿱","八","厶"],"六":["⿱","亠","八"],"关":["⿱","丷","天"],"典":["⿱","曲","八"],"冒":["⿱","日","目"],"写":["⿱","冖","与"],"冰":["⿰","冫","水"],"决":["⿰","冫","夬"],"冷":["⿰","冫","令"],"净":["⿰","冫","争"],"准":["⿰","冫","隹"],"出":["⿱","屮","凵"],"分":["⿱","八","刀"],"刚":["⿰","冈","刂"],"别":["⿰","另","刂"],"刮":["⿰","舌","刂"],"到":["⿰","至","刂"],"刻":["⿰","亥","刂"],"加":["⿰","力","口"],"务":["⿱","夂","力"],"动":["⿰","云","力"],"助":["⿰","且","力"],"努":["⿱","奴","力"],"化":["⿰","亻","匕"],"卖":["⿱","十","买"],"去":["⿱","土","厶"],"双":["⿰","又","又"],"变":["⿱","亦","又"],"只":["⿱","口","八"],"叫":["⿰","口","丩"],"号":["⿱","口","丂"],"吃":["⿰","口","乞"],"吗":["⿰","口","马"],"吧":["⿰","口","巴"],"听":["⿰","口","斤"],"告":["⿱","牛","口"],"员":["⿱","口","贝"],"呢":["⿰","口","尼"],"和":["⿰","禾","口"],"咖":["⿰","口","加"],"响":["⿰","口","向"],"哥":["⿱","可","可"],"哪":["⿰","口","那"],"唱":["⿰","口","昌"],"啊":["⿰","口","阿"],"啡":["⿰","口","非"],"啤":["⿰","口","卑"],"喂":["⿰","口","畏"],"喜":["⿱","壴","口"],"喝":["⿰","口","曷"],"地":["⿰","土","也"],"场":["⿰","土","勿"],"坏":["⿰","土","不"],"块":["⿰","土","夬"],"城":["⿰","土","成"],"境":["⿰","土","竟"],"备":["⿱","夂","田"],"外":["⿰","夕","卜"],"多":["⿱","夕","夕"],"奇":["⿱","大","可"],"奶":["⿰","女","乃"],"她":["⿰","女","也"],"好":["⿰","女","子"],"如":["⿰","女","口"],"妈":["⿰","女","马"],"妹":["⿰","女","未"],"始":["⿰","女","台"],"姐":["⿰","女","且"],"姓":["⿰","女","生"],"姨":["⿰","女","夷"],"婚":["⿰","女","昏"],"字":["⿱","宀","子"],"季":["⿱","禾","子"],"孩":["⿰","子","亥"],"它":["⿱","宀","匕"],"安":["⿱","宀","女"],"完":["⿱","宀","元"],"定":["⿱","宀","疋"],"宜":["⿱","宀","且"],"实":["⿱","宀","头"],"客":["⿱","宀","各"],"室":["⿱","宀","至"],"家":["⿱","宀","豕"],"容":["⿱","宀","谷"],"宾":["⿱","宀","兵"],"对":["⿰","又","寸"],"就":["⿰","京","尤"],"岁":["⿱","山","夕"],"市":["⿱","亠","巾"],"师":["⿰","刂","帀"],"希":["⿱","乂","布"],"帮":["⿱","邦","巾"],"常":["⿱","尚","巾"],"帽":["⿰","巾","冒"],"张":["⿰","弓","长"],"影":["⿰","景","彡"],"很":["⿰","彳","艮"],"忘":["⿱","亡","心"],"忙":["⿰","忄","亡"],"快":["⿰","忄","夬"],"怎":["⿱","乍","心"],"怕":["⿰","忄","白"],"思":["⿱","田","心"],"急":["⿱","刍","心"],"怪":["⿰","忄","圣"],"总":["⿳","丷","口","心"],"息":["⿱","自","心"],"您":["⿱","你","心"],"情":["⿰","忄","青"],"惯":["⿰","忄","贯"],"想":["⿱","相","心"],"意":["⿱","音","心"],"感":["⿱","咸","心"],"慢":["⿰","忄","曼"],"懂":["⿰","忄","董"],"戏":["⿰","又","戈"],"成":["⿰","丁","戈"],"我":["⿰","扌","戈"],"所":["⿰","户","斤"],"打":["⿰","扌","丁"],"扫":["⿰","扌","彐"],"找":["⿰","扌","戈"],"把":["⿰","扌","巴"],"护":["⿰","扌","户"],"担":["⿰","扌","旦"],"拿":["⿱","合","手"],"换":["⿰","扌","奂"],"据":["⿰","扌","居"],"接":["⿰","扌","妾"],"提":["⿰","扌","是"],"搬":["⿰","扌","般"],"放":["⿰","方","攵"],"故":["⿰","古","攵"],"教":["⿰","孝","攵"],"数":["⿰","娄","攵"],"文":["⿱","亠","乂"],"新":["⿰","亲","斤"],"旁":["⿱","立","方"],"早":["⿱","日","十"],"时":["⿰","日","寸"],"明":["⿰","日","月"],"易":["⿱","日","勿"],"星":["⿱","日","生"],"昨":["⿰","日","乍"],"是":["⿱","日","疋"],"晚":["⿰","日","免"],"普":["⿱","並","日"],"晴":["⿰","日","青"],"最":["⿱","日","取"],"朋":["⿰","月","月"],"期":["⿰","其","月"],"朵":["⿱","几","木"],"机":["⿰","木","几"],"李":["⿱","木","子"],"条":["⿱","夂","木"],"杯":["⿰","木","不"],"板":["⿰","木","反"],"极":["⿰","木","及"],"果":["⿱","田","木"],"查":["⿱","木","旦"],"树":["⿰","木","对"],"校":["⿰","木","交"],"样":["⿰","木","羊"],"根":["⿰","木","艮"],"桌":["⿱","卓","木"],"梯":["⿰","木","弟"],"检":["⿰","木","佥"],"椅":["⿰","木","奇"],"楚":["⿱","林","疋"],"楼":["⿰","木","娄"],"次":["⿰","冫","欠"],"欢":["⿰","又","欠"],"歌":["⿰","哥","欠"],"比":["⿰","匕","匕"],"汁":["⿰","氵","十"],"汉":["⿰","氵","又"],"汽":["⿰","氵","气"],"没":["⿰","氵","殳"],"河":["⿰","氵","可"],"法":["⿰","氵","去"],"注":["⿰","氵","主"],"泳":["⿰","氵","永"],"洗":["⿰","氵","先"],"清":["⿰","氵","青"],"渴":["⿰","氵","曷"],"游":["⿰","氵","斿"],"漂":["⿰","氵","票"],"演":["⿰","氵","寅"],"澡":["⿰","氵","喿"],"灯":["⿰","火","丁"],"点":["⿱","占","灬"],"炼":["⿰","火","柬"],"烧":["⿰","火","尧"],"热":["⿱","执","灬"],"然":["⿱","肰","灬"],"照":["⿱","昭","灬"],"熊":["⿱","能","灬"],"爷":["⿱","父","卩"],"爸":["⿱","父","巴"],"物":["⿰","牛","勿"],"特":["⿰","牛","寺"],"狗":["⿰","犭","句"],"猫":["⿰","犭","苗"],"玩":["⿰","王","元"],"环":["⿰","王","不"],"现":["⿰","王","见"],"班":["⿲","王","刂","王"],"球":["⿰","王","求"],"理":["⿰","王","里"],"甜":["⿰","舌","甘"],"男":["⿱","田","力"],"界":["⿱","田","介"],"的":["⿰","白","勺"],"盘":["⿱","舟","皿"],"相":["⿰","木","目"],"看":["⿱","手","目"],"真":["⿱","直","几"],"眼":["⿰","目","艮"],"睛":["⿰","目","青"],"睡":["⿰","目","垂"],"知":["⿰","矢","口"],"短":["⿰","矢","豆"],"矮":["⿰","矢","委"],"碗":["⿰","石","宛"],"示":["⿱","二","小"],"祝":["⿰","礻","兄"],"票":["⿱","覀","示"],"秋":["⿰","禾","火"],"种":["⿰","禾","中"],"租":["⿰","禾","且"],"空":["⿱","穴","工"],"穿":["⿱","穴","牙"],"突":["⿱","穴","犬"],"站":["⿰","立","占"],"糕":["⿰","米","羔"],"糖":["⿰","米","唐"],"累":["⿱","田","糸"],"红":["⿰","纟","工"],"级":["⿰","纟","及"],"纸":["⿰","纟","氏"],"练":["⿰","纟","柬"],"终":["⿰","纟","冬"],"绍":["⿰","纟","召"],"结":["⿰","纟","吉"],"给":["⿰","纟","合"],"绩":["⿰","纟","责"],"绿":["⿰","纟","录"],"老":["⿱","耂","匕"],"聪":["⿰","耳","总"],"舒":["⿰","舍","予"],"舞":["⿱","無","舛"],"般":["⿰","舟","殳"],"花":["⿱","艹","化"],"苹":["⿱","艹","平"],"草":["⿱","艹","早"],"药":["⿱","艹","约"],"菜":["⿱","艹","采"],"萄":["⿱","艹","匋"],"葡":["⿱","艹","匍"],"蓝":["⿱","艹","监"],"蕉":["⿱","艹","焦"],"虽":["⿱","口","虫"],"蛋":["⿱","疋","虫"],"行":["⿰","彳","亍"],"表":["⿱","毛","衣"],"衫":["⿰","衤","彡"],"衬":["⿰","衤","寸"],"被":["⿰","衤","皮"],"裙":["⿰","衤","君"],"裤":["⿰","衤","库"],"要":["⿱","覀","女"],"视":["⿰","礻","见"],"认":["⿰","讠","人"],"让":["⿰","讠","上"],"议":["⿰","讠","义"],"记":["⿰","讠","己"],"讲":["⿰","讠","井"],"识":["⿰","讠","只"],"诉":["⿰","讠","斥"],"词":["⿰","讠","司"],"试":["⿰","讠","式"],"话":["⿰","讠","舌"],"该":["⿰","讠","亥"],"语":["⿰","讠","吾"],"说":["⿰","讠","兑"],"请":["⿰","讠","青"],"读":["⿰","讠","卖"],"课":["⿰","讠","果"],"谁":["⿰","讠","隹"],"调":["⿰","讠","周"],"谢":["⿰","讠","射"],"走":["⿱","土","止"],"跑":["⿰","足","包"],"跟":["⿰","足","艮"],"路":["⿰","足","各"],"跳":["⿰","足","兆"],"踢":["⿰","足","易"],"较":["⿰","车","交"],"辆":["⿰","车","两"],"邮":["⿰","由","阝"],"邻":["⿰","令","阝"],"都":["⿰","者","阝"],"酒":["⿰","氵","酉"],"里":["⿱","田","土"],"钟":["⿰","钅","中"],"钱":["⿰","钅","戋"],"铁":["⿰","钅","失"],"银":["⿰","钅","艮"],"错":["⿰","钅","昔"],"锻":["⿰","钅","段"],"镜":["⿰","钅","竟"],"阳":["⿰","阝","日"],"阴":["⿰","阝","月"],"阿":["⿰","阝","可"],"附":["⿰","阝","付"],"院":["⿰","阝","完"],"除":["⿰","阝","余"],"难":["⿰","又","隹"],"雪":["⿱","雨","彐"],"零":["⿱","雨","令"],"需":["⿱","雨","而"],"静":["⿰","青","争"],"鞋":["⿰","革","圭"],"音":["⿱","立","日"],"须":["⿰","彡","页"],"顾":["⿰","厄","页"],"颜":["⿰","彦","页"],"饭":["⿰","饣","反"],"饱":["⿰","饣","包"],"饿":["⿰","饣","我"],"馆":["⿰","饣","官"],"香":["⿱","禾","日"],"骑":["⿰","马","奇"],"高":["⿳","亠","口","冋"],"鲜":["⿰","鱼","羊"],"鸡":["⿰","又","鸟"],"鼻":["⿱","自","畀"]};
 const inC=i=>!S.cat||CATN[CATI[i]]===S.cat;
 const catChip=()=>S.cat?`<button class="chip on" data-a="catx">Тема: ${S.cat} ✕</button>`:'';
 const rst0=()=>{deck=[];pos=0;Q=null;wd=[];wp=0;sd=[];sp=0};
@@ -208,20 +219,20 @@ function ans(k){
 }
 
 /* ---- Тест ---- */
-let Q=null;
+let Q=null,M=null;
 function startQ(pool){
   pool=pool||(Q&&Q.pool)||'all';
   let idx=all().filter(i=>inC(i)&&(pool==='all'||S.st[i]===2));
   if(!idx.length){idx=all();pool='all'}
-  sh(idx);Q={pool,list:idx.slice(0,10),i:0,ok:0,streak:0,pick:null};mkOpts();rQuiz();
+  sh(idx);M=null;Q={pool,list:idx.slice(0,10),i:0,ok:0,streak:0,pick:null};mkOpts();rQuiz();
 }
 function mkOpts(){
   const i=Q.list[Q.i],key=j=>S.dir?D[j][0]:D[j][2],o=[i];
   while(o.length<4){const j=Math.random()*D.length|0;if(!o.includes(j)&&!o.some(k=>key(k)===key(j)))o.push(j)}
   Q.opts=sh(o);
 }
-function rQuiz(){
-  const top=`<div class="chips"><button class="chip ${Q.pool==='all'?'on':''}" data-a="qs" data-v="all">Все слова</button><button class="chip ${Q.pool==='unk'?'on':''}" data-a="qs" data-v="unk">Только «Не знаю»</button>${dirChip()}</div>`;
+function rQuiz0(){
+  const top=`<div class="chips">${qmChips()}</div><div class="chips"><button class="chip ${Q.pool==='all'?'on':''}" data-a="qs" data-v="all">Все слова</button><button class="chip ${Q.pool==='unk'?'on':''}" data-a="qs" data-v="unk">Только «Не знаю»</button>${dirChip()}</div>`;
   if(Q.i>=Q.list.length){
     $('#main').innerHTML=top+`<div class="done"><h2>${Q.ok} из ${Q.list.length}</h2><p class="hint">Ошибки попали в список «Не знаю».</p><button class="big" data-a="qs" data-v="${Q.pool}">Ещё раунд</button></div>`;return;
   }
@@ -231,6 +242,38 @@ function rQuiz(){
     return `<button class="${cl}" data-a="opt" data-v="${j}" ${a?'disabled':''}>${S.dir?`<span class="oh">${D[j][0]}</span>`:esc(D[j][2])}</button>`}).join('');
   const ban=a?`<div class="ban ${Q.pick===i?'ok':'bad'}"><div><b>${Q.pick===i?'Верно':'Неверно'}</b><div>${c} ${p} — ${esc(t)}</div></div><button class="chip" data-a="spkq" aria-label="Озвучить">🔊</button><button class="big" data-a="next">Дальше</button></div>`:'';
   $('#main').innerHTML=top+`<div class="qh"><span>${Q.i+1} из ${Q.list.length}</span><span>Серия: ${Q.streak}</span></div><div class="prog"><i style="width:${Q.i/Q.list.length*100}%"></i></div><div class="q">${q}</div><div class="opts">${opts}</div>${ban}`;
+}
+function rQuiz(){(S.qm||'choice')==='match'?rMatch():rQuiz0()}
+const qmChips=()=>[['choice','Выбор'],['match','Пары']].map(([k,l])=>`<button class="chip ${(S.qm||'choice')===k?'on':''}" data-a="qm" data-v="${k}">${l}</button>`).join('');
+const mTile=i=>{const [c,p]=D[i];return S.ms===1?`<b>${p}</b>`:S.ms===2?`<b class="mh">${c}</b>`:`<b class="mh">${c}</b><small>${p}</small>`};
+function mNew(){
+  const pool=(Q&&Q.pool)||'all';let src=sh(all().filter(i=>inC(i)&&(pool==='all'||S.st[i]===2)));
+  if(src.length<4)src=sh(all());
+  const ws=[],seen=new Set();
+  for(const i of src){const k=D[i][2];if(seen.has(k))continue;seen.add(k);ws.push(i);if(ws.length>=20)break}
+  const rounds=Math.max(1,Math.floor(ws.length/4));
+  M={pool,ws:ws.slice(0,rounds*4),rounds,r:0,err:0,w:{},fin:0,lock:0};mRound();
+}
+function mRound(){M.cur=M.ws.slice(M.r*4,M.r*4+4);M.L=sh([...M.cur]);M.R=sh([...M.cur]);M.done=[];M.selL=null;M.selR=null;M.bad=null}
+function rMatch(){
+  if(!M)mNew();
+  const top=`<div class="chips">${qmChips()}</div><div class="chips"><button class="chip ${M.pool==='all'?'on':''}" data-a="qs" data-v="all">Все слова</button><button class="chip ${M.pool==='unk'?'on':''}" data-a="qs" data-v="unk">Только «Не знаю»</button><button class="chip" data-a="ms">${['Иероглиф + пиньинь','Пиньинь','Иероглиф'][S.ms||0]}</button>${catChip()}</div>`;
+  if(M.fin){$('#main').innerHTML=top+`<div class="done"><h2>Готово!</h2><p class="hint">Слов: ${M.ws.length}. Ошибок: ${M.err}.</p><button class="big" data-a="qs" data-v="${M.pool}">Ещё раунд</button></div>`;return}
+  const tile=(sd,i)=>{const done=M.done.includes(i),sel=(sd==='L'?M.selL:M.selR)===i,bad=M.bad&&M.bad[sd==='L'?0:1]===i;
+    return `<button class="mtile ${done?'ok':sel?'sel':bad?'bad':''}" data-a="mt" data-v="${sd}:${i}" ${done?'disabled':''}>${sd==='L'?mTile(i):`<b>${esc(D[i][2])}</b>`}</button>`};
+  const pct=(M.r+M.done.length/M.cur.length)/M.rounds*100;
+  $('#main').innerHTML=top+`<div class="qh"><span>Раунд ${M.r+1} из ${M.rounds}</span><span>Ошибок: ${M.err}</span></div><div class="prog"><i style="width:${pct}%"></i></div><p class="hint" style="text-align:center">Найдите пары: слово и его перевод.</p><div class="mt"><div class="mc">${M.L.map(i=>tile('L',i)).join('')}</div><div class="mc">${M.R.map(i=>tile('R',i)).join('')}</div></div>`;
+}
+function mTap(v){
+  if(M.lock)return;const [sd,x]=v.split(':'),i=+x;if(M.done.includes(i))return;
+  if(sd==='L')M.selL=M.selL===i?null:i;else M.selR=M.selR===i?null:i;
+  if(M.selL!==null&&M.selR!==null){
+    const a=M.selL,b=M.selR;
+    if(a===b){M.done.push(a);grade(a,!M.w[a]);try{say(a)}catch(_){}M.selL=M.selR=null;
+      if(M.done.length===M.cur.length){M.lock=1;rMatch();return setTimeout(()=>{M.lock=0;M.r++;if(M.r>=M.rounds)M.fin=1;else mRound();rMatch()},600)}
+    }else{M.err++;M.w[a]=1;M.w[b]=1;M.bad=[a,b];M.lock=1;rMatch();return setTimeout(()=>{M.lock=0;M.bad=null;M.selL=null;M.selR=null;rMatch()},450)}
+  }
+  rMatch();
 }
 function pick(j){
   if(Q.pick!==null)return;const i=Q.list[Q.i];Q.pick=j;
@@ -244,7 +287,8 @@ const fchips0=()=>[['due','Повторить ('+dueN()+')'],['all','Все'],['
 const fchips=()=>fchips0()+catChip();
 function mkW(){wd=sh(all().filter(i=>inF(i)));wp=0}
 function rWrite(){
-  let h=`<div class="chips">${fchips()}</div>`;
+  if((S.wm||'draw')!=='draw')return rPz();
+  let h=`<div class="chips">${wmChips()}</div><div class="chips">${fchips()}</div>`;
   if(wp>=wd.length){
     h+=`<div class="done"><h2>${wd.length?'Все слова написаны':'Здесь пока пусто'}</h2><p class="hint">${wd.length?'Слова «Не знал» попадут в «Не знаю».':'Выберите другой фильтр.'}</p><button class="big" data-a="wagain">Начать заново</button></div>`;
   }else{
@@ -257,6 +301,41 @@ function rWrite(){
     <p class="hint">Напишите иероглиф пальцем и нажмите «Показать ответ». Приложение сравнит форму; порядок черт не учитывается.</p>`;
   }
   $('#main').innerHTML=h;bindW();
+}
+let pzd=[],pzp=0,pzk='',pz=null;
+const wmChips=()=>[['draw','Рисовать'],['fill','Достроить'],['build','Собрать']].map(([k,l])=>`<button class="chip ${(S.wm||'draw')===k?'on':''}" data-a="wm" data-v="${k}">${l}</button>`).join('');
+const hasDec=i=>[...D[i][0]].some(c=>DEC[c]);
+const LAY={'⿰':'r','⿲':'r','⿱':'c','⿳':'c'};
+function pzNew(){
+  const i=pzd[pzp],cs=[...D[i][0]].filter(c=>DEC[c]),c=cs[Math.random()*cs.length|0],[idc,...ps]=DEC[c],fill=S.wm==='fill';
+  const pool=[...new Set(Object.values(DEC).flatMap(d=>d.slice(1)))].filter(x=>!ps.includes(x)),hole=Math.random()*ps.length|0;
+  pz={i,c,idc,ps,hole,pl:[],used:[],bad:[],wrong:0,done:0,opts:sh(fill?[ps[hole],...sh(pool).slice(0,3)]:[...ps,...sh(pool).slice(0,2)])};
+}
+function lay(a){return `<div class="ly ${LAY[pz.idc]}">${a.map(x=>`<div class="sl ${x==='？'?'q':x?'f':''}">${x}</div>`).join('')}</div>`}
+function rPz(){
+  const k=S.f+'|'+(S.cat||'')+'|'+S.wm;
+  if(pzk!==k||(!pzd.length&&pzp===0)){pzk=k;pzd=sh(all().filter(i=>inF(i)&&hasDec(i)));pzp=0;pz=null}
+  let h=`<div class="chips">${wmChips()}</div><div class="chips">${fchips()}</div>`;
+  if(pzp>=pzd.length){
+    h+=`<div class="done"><h2>${pzd.length?'Всё пройдено':'Здесь пока пусто'}</h2><p class="hint">${pzd.length?'':'В этом фильтре нет слов с иероглифами, которые можно разобрать на части.'}</p><button class="big" data-a="pzagain">Начать заново</button></div>`;
+  }else{
+    if(!pz)pzNew();
+    const {i,c,ps,hole,done}=pz,[w,p,t]=D[i],fill=S.wm==='fill';
+    const a=fill?ps.map((x,j)=>j===hole?'？':x):ps.map((x,j)=>j<pz.pl.length?x:'');
+    let u=0;
+    const word=[...w].map(ch=>(ch!==c||u++)?`<span class="wc">${ch}</span>`:done?`<span class="wc ok">${ch}</span>`:lay(a)).join('');
+    h+=`<div class="cnt">${pzp+1} из ${pzd.length}</div><div class="wq"><div class="tr f">${esc(t)}</div><div class="py">${p}</div></div><div class="pzw">${word}</div>`;
+    if(done)h+=`<p class="hint" style="text-align:center">${c} = ${ps.join(' + ')}</p><div class="btns"><button class="big" data-a="pznext">Дальше</button></div>`;
+    else h+=`<div class="tiles">${pz.opts.map((o,j)=>`<button class="opt ${pz.used.includes(j)?'ok':pz.bad.includes(j)?'bad':''}" data-a="pzp" data-v="${j}" ${pz.used.includes(j)?'disabled':''}>${o}</button>`).join('')}</div><p class="hint">${fill?'Какой части не хватает? Выберите.':'Соберите иероглиф: выбирайте части по порядку, слева направо или сверху вниз.'}</p>`;
+  }
+  $('#main').innerHTML=h;
+}
+function pzTap(j){
+  const o=pz.opts[j];
+  if(S.wm==='fill'){if(o===pz.ps[pz.hole]){pz.done=1;grade(pz.i,!pz.wrong)}else{pz.wrong++;pz.bad.push(j)}}
+  else if(o===pz.ps[pz.pl.length]){pz.pl.push(o);pz.used.push(j);pz.bad=[];if(pz.pl.length===pz.ps.length){pz.done=1;grade(pz.i,!pz.wrong)}}
+  else{pz.wrong++;pz.bad.push(j);toast('Не та часть')}
+  rPz();
 }
 function bindW(){
   const cv=$('#cv');if(!cv)return;
@@ -454,6 +533,13 @@ document.addEventListener('click',e=>{
   else if(a==='wc'){wcat=v;rWords()}
   else if(a==='learn'){S.cat=wcat;S.f='all';S.tab='cards';save();rst0();go()}
   else if(a==='catx'){S.cat='';save();rst0();go()}
+  else if(a==='wm'){S.wm=v;save();pz=null;go()}
+  else if(a==='pzp')pzTap(+v)
+  else if(a==='pznext'){pzp++;pz=null;rPz()}
+  else if(a==='pzagain'){pzd=[];pzp=0;pz=null;rPz()}
+  else if(a==='qm'){S.qm=v;save();M=null;Q=null;go()}
+  else if(a==='mt')mTap(v)
+  else if(a==='ms'){S.ms=((S.ms||0)+1)%3;save();rMatch()}
   else if(a==='ext'){try{TG.openLink(location.href)}catch(_){}}
   else if(a==='exp'){
     const code=btoa(unescape(encodeURIComponent(JSON.stringify({st:S.st,notes:S.notes||{},sr:S.sr,xp:S.xp,days:S.days,best:S.best}))));
