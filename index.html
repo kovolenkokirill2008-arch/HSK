@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru"><head><meta charset="utf-8">
+<html lang="ru"><head><meta charset="utf-8"><script src="https://telegram.org/js/telegram-web-app.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>HSK 3 — 600 слов</title>
 <style>
@@ -78,17 +78,28 @@ button:disabled{opacity:.6}
 .hintbox .hz{font-size:60px}
 .skip{width:100%;margin-top:12px;background:none;border:0;color:var(--mut);text-decoration:underline;font:15px inherit;padding:10px}
 button:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+#bar{display:flex;justify-content:space-between;gap:6px;margin:8px 2px 0;font-size:13px;font-weight:600;color:var(--mut)}
+.legend{display:flex;flex-wrap:wrap;gap:4px 12px;margin:8px 0;font-size:13px;color:var(--mut)}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.qst{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:8px 0}
+.qst.dn{border-color:var(--ok)}.qt{display:flex;justify-content:space-between;font-size:15px}
+.qst .prog{margin:8px 0 4px}
+.bgs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bg{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 4px;text-align:center;opacity:.4}
+.bg.on{opacity:1;border-color:var(--ok)}.bg b{display:block;font-size:20px}.bg span{font-size:12px;color:var(--mut)}
+.chips.cats{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-bottom:4px}.cats .chip{flex:none}
 </style></head><body>
 <div id="app">
-<nav><button data-a="tab" data-v="cards">Карточки</button><button data-a="tab" data-v="quiz">Тест</button><button data-a="tab" data-v="write">Письмо</button><button data-a="tab" data-v="speak">Речь</button><button data-a="tab" data-v="words">Слова</button><button data-a="tab" data-v="stats">Прогресс</button></nav>
+<nav><button data-a="tab" data-v="cards">Карточки</button><button data-a="tab" data-v="quiz">Тест</button><button data-a="tab" data-v="write">Письмо</button><button data-a="tab" data-v="speak">Речь</button><button data-a="tab" data-v="words">Слова</button><button data-a="tab" data-v="stats">Прогресс</button></nav><div id="bar"></div>
 <main id="main"></main>
+<button class="skip" id="ext" data-a="ext" hidden>Микрофон не работает? Открыть в браузере</button>
 </div>
 <script>
 const D=[["阿姨","āyí","тётя"],["啊","a","(частица)"],["矮","ǎi","низкий (о росте)"],["爱","ài","любить"],["爱好","àihào","увлечение"],["安静","ānjìng","тихий"],["八","bā","восемь"],["把","bǎ","(предлог)"],["爸爸","bàbà","папа"],["吧","ba","(частица)"],["白","bái","белый"],["百","bǎi","сто"],["班","bān","класс"],["搬","bān","переносить"],["半","bàn","половина"],["办法","bànfǎ","способ"],["办公室","bàngōngshì","офис"],["帮忙","bāngmáng","помогать"],["帮助","bāngzhù","помощь"],["包","bāo","сумка"],["饱","bǎo","сытый"],["报纸","bàozhǐ","газета"],["杯子","bēizi","стакан"],["北方","běifāng","север"],["北京","běijīng","Пекин"],["被","bèi","(пассив)"],["本","běn","(сч. слово для книг)"],["鼻子","bízi","нос"],["比","bǐ","чем (сравнение)"],["比较","bǐjiào","довольно"],["比赛","bǐsài","соревнование"],["必须","bìxū","нужно, должен"],["变化","biànhuà","изменение"],["表示","biǎoshì","выражать"],["表演","biǎoyǎn","выступление"],["别","bié","не (запрет)"],["别人","biérén","другие"],["宾馆","bīnguǎn","гостиница"],["冰箱","bīngxiāng","холодильник"],["不客气","búkèqì","не за что"],["不","bù","не"],["才","cái","только, лишь"],["菜","cài","блюдо, овощи"],["菜单","càidān","меню"],["参加","cānjiā","участвовать"],["草","cǎo","трава"],["层","céng","этаж, слой"],["茶","chá","чай"],["差","chà","плохой, не хватать"],["长","cháng","длинный"],["长","zhǎng","расти"],["唱歌","chànggē","петь"],["超市","chāoshì","супермаркет"],["衬衫","chènshān","рубашка"],["成绩","chéngjì","результат"],["城市","chéngshì","город"],["吃","chī","есть, кушать"],["迟到","chídào","опаздывать"],["出","chū","выходить"],["出现","chūxiàn","появляться"],["出租车","chūzūchē","такси"],["厨房","chúfáng","кухня"],["除了","chúle","кроме"],["穿","chuān","носить (одежду)"],["船","chuán","корабль"],["春","chūn","весна"],["词语","cíyǔ","слово"],["次","cì","раз"],["聪明","cōngmíng","умный"],["从","cóng","из, от"],["错","cuò","неправильный"],["打电话","dǎdiànhuà","звонить по телефону"],["打篮球","dǎlánqiú","играть в баскетбол"],["打扫","dǎsǎo","убирать"],["打算","dǎsuàn","планировать"],["大","dà","большой"],["大家","dàjiā","все"],["带","dài","брать с собой"],["担心","dānxīn","беспокоиться"],["蛋糕","dàngāo","торт"],["但是","dànshì","но"],["当然","dāngrán","конечно"],["到","dào","прибывать"],["地","dì","(частица обстоятельства)"],["的","de","(притяж. частица)"],["得","dé","(частица степени)"],["灯","dēng","лампа"],["等","děng","ждать"],["低","dī","низкий"],["弟弟","dìdi","младший брат"],["地方","dìfāng","место"],["地铁","dìtiě","метро"],["地图","dìtú","карта"],["第一","dìyī","первый"],["点","diǎn","час, точка"],["电脑","diànnǎo","компьютер"],["电视","diànshì","телевизор"],["电梯","diàntī","лифт"],["电影","diànyǐng","фильм"],["电子邮件","diànziyóujiàn","электронная почта"],["东","dōng","восток"],["东西","dōngxī","вещь"],["冬","dōng","зима"],["懂","dǒng","понимать"],["动物","dòngwù","животное"],["都","dōu","все, всё"],["读","dú","читать"],["短","duǎn","короткий"],["段","duàn","отрезок"],["锻炼","duànliàn","тренироваться"],["对","duì","верно"],["对不起","duìbùqǐ","простите"],["多","duō","много"],["多么","duōme","как (сильно)"],["多少","duōshǎo","сколько"],["饿","è","голодный"],["而且","érqiě","к тому же"],["儿子","érzi","сын"],["耳朵","ěrduǒ","ухо"],["二","èr","два"],["发烧","fāshāo","температура"],["发现","fāxiàn","обнаружить"],["饭馆","fànguǎn","ресторан"],["方便","fāngbiàn","удобный"],["房间","fángjiān","комната"],["放","fàng","класть"],["放心","fàngxīn","не волноваться"],["非常","fēicháng","очень"],["飞机","fēijī","самолёт"],["分","fēn","минута, фэнь"],["分钟","fēnzhōng","минута"],["服务员","fúwùyuán","официант"],["附近","fùjìn","поблизости"],["复习","fùxí","повторять"],["干净","gānjìng","чистый"],["敢","gǎn","осмелиться"],["感冒","gǎnmào","простуда"],["刚才","gāngcái","только что"],["高","gāo","высокий"],["高兴","gāoxìng","радостный"],["告诉","gàosù","сказать"],["哥哥","gēgē","старший брат"],["个","gè","(общее сч. слово)"],["给","gěi","давать"],["跟","gēn","с, и"],["根据","gēnjù","согласно"],["更","gèng","ещё более"],["公共汽车","gōnggòngqìchē","автобус"],["公斤","gōngjīn","килограмм"],["公司","gōngsī","компания"],["公园","gōngyuán","парк"],["工作","gōngzuò","работа"],["狗","gǒu","собака"],["故事","gùshì","рассказ"],["刮风","guāfēng","дует ветер"],["关","guān","закрывать"],["关系","guānxì","отношения"],["关于","guānyú","о, про"],["贵","guì","дорогой"],["国家","guójiā","страна"],["果汁","guǒzhī","сок"],["过去","guòqù","прошлое, уйти"],["过","guò","(суффикс опыта)"],["关心","guānxīn","заботиться"],["还","hái","ещё, всё ещё"],["还","huán","возвращать"],["还是","háishì","или (в вопросе)"],["孩子","háizi","ребёнок"],["害怕","hàipà","бояться"],["汉语","hànyǔ","китайский язык"],["好","hǎo","хороший"],["好吃","hǎochī","вкусный"],["号","hào","число, номер"],["喝","hē","пить"],["和","hé","и"],["河","hé","река"],["黑","hēi","чёрный"],["黑板","hēibǎn","доска"],["很","hěn","очень"],["红","hóng","красный"],["后面","hòumiàn","сзади"],["护照","hùzhào","паспорт"],["花","huā","цветок, тратить"],["花园","huāyuán","сад"],["画","huà","рисовать"],["坏","huài","плохой, сломанный"],["欢迎","huānyíng","добро пожаловать"],["环境","huánjìng","окружающая среда"],["换","huàn","менять"],["黄","huáng","жёлтый"],["回","huí","возвращаться"],["回答","huídá","отвечать"],["会","huì","уметь, будет"],["会议","huìyì","совещание"],["火车站","huǒchēzhàn","вокзал"],["或者","huòzhě","или (в утверждении)"],["机场","jīchǎng","аэропорт"],["鸡蛋","jīdàn","яйцо"],["几乎","jīhū","почти"],["机会","jīhuì","шанс"],["极","jí","крайне"],["几","jǐ","сколько (до 10)"],["记得","jìde","помнить"],["季节","jìjié","сезон"],["家","jiā","дом, семья"],["检查","jiǎnchá","проверять"],["简单","jiǎndān","простой"],["件","jiàn","(сч. слово: одежда, дела)"],["健康","jiànkāng","здоровье"],["见面","jiànmiàn","встречаться"],["讲","jiǎng","рассказывать"],["教","jiào","учить (кого-то)"],["角","jiǎo","цзяо (10 фэней)"],["脚","jiǎo","ступня"],["叫","jiào","звать, называться"],["教室","jiàoshì","класс (комната)"],["接","jiē","встречать, брать"],["街道","jiēdào","улица"],["结婚","jiéhūn","жениться"],["结束","jiéshù","заканчиваться"],["节目","jiémù","программа (передача)"],["节日","jiérì","праздник"],["姐姐","jiějiě","старшая сестра"],["解决","jiějué","решать (проблему)"],["借","jiè","одалживать"],["介绍","jièshào","представлять"],["今天","jīntiān","сегодня"],["进","jìn","входить"],["近","jìn","близкий"],["经常","jīngcháng","часто"],["经过","jīngguò","проходить"],["经理","jīnglǐ","менеджер"],["九","jiǔ","девять"],["久","jiǔ","долго"],["旧","jiù","старый (о вещах)"],["就","jiù","тогда, уже"],["举行","jǔxíng","проводить (мероприятие)"],["句子","jùzi","предложение"],["觉得","juéde","считать, чувствовать"],["决定","juédìng","решать"],["咖啡","kāfēi","кофе"],["开","kāi","открывать"],["开始","kāishǐ","начинать"],["看","kàn","смотреть"],["看见","kànjiàn","увидеть"],["考试","kǎoshì","экзамен"],["渴","kě","хотеть пить"],["可爱","kěài","милый"],["可能","kěnéng","возможно"],["可以","kěyǐ","можно"],["刻","kè","четверть часа"],["课","kè","урок"],["客人","kèrén","гость"],["空调","kōngtiáo","кондиционер"],["口","kǒu","рот"],["哭","kū","плакать"],["裤子","kùzi","брюки"],["块","kuài","кусок, юань"],["快","kuài","быстрый"],["快乐","kuàilè","весёлый"],["筷子","kuàizi","палочки"],["来","lái","приходить"],["蓝","lán","синий"],["老","lǎo","старый (о людях)"],["老师","lǎoshī","учитель"],["了","le","(частица завершения)"],["累","lèi","уставший"],["冷","lěng","холодный"],["离","lí","от (расстояние)"],["离开","líkāi","уходить"],["里","lǐ","внутри"],["礼物","lǐwù","подарок"],["历史","lìshǐ","история"],["脸","liǎn","лицо"],["练习","liànxí","упражнение"],["两","liǎng","два (перед сч. словом)"],["辆","liàng","(сч. слово: машины)"],["了解","liǎojiě","узнавать, понимать"],["邻居","línjū","сосед"],["零","líng","ноль"],["六","liù","шесть"],["楼","lóu","здание, этаж"],["路","lù","дорога"],["旅游","lǚyóu","путешествие"],["绿","lǜ","зелёный"],["妈妈","māmā","мама"],["马","mǎ","лошадь"],["马上","mǎshàng","сразу"],["吗","ma","(вопросит. частица)"],["买","mǎi","покупать"],["卖","mài","продавать"],["满意","mǎnyì","доволен"],["慢","màn","медленный"],["忙","máng","занятой"],["猫","māo","кошка"],["帽子","màozi","шапка"],["没","méi","нет, не иметь"],["没关系","méiguānxì","ничего страшного"],["每","měi","каждый"],["妹妹","mèimèi","младшая сестра"],["门","mén","дверь"],["米","mǐ","метр"],["米饭","mǐfàn","варёный рис"],["面包","miànbāo","хлеб"],["面条","miàntiáo","лапша"],["明白","míngbái","понимать"],["明天","míngtiān","завтра"],["名字","míngzì","имя"],["拿","ná","брать"],["哪","nǎ","какой, где"],["那","nà","тот"],["奶奶","nǎinǎi","бабушка"],["南","nán","юг"],["男人","nánrén","мужчина"],["难","nán","трудный"],["难过","nánguò","грустный"],["呢","ne","(частица)"],["能","néng","мочь"],["你","nǐ","ты"],["年","nián","год"],["年级","niánjí","класс (курс)"],["年轻","niánqīng","молодой"],["鸟","niǎo","птица"],["您","nín","Вы"],["牛奶","niúnǎi","молоко"],["努力","nǔlì","стараться"],["女儿","nǚér","дочь"],["女人","nǚrén","женщина"],["爬山","páshān","ходить в горы"],["盘子","pánzi","тарелка"],["旁边","pángbiān","рядом"],["胖","pàng","толстый"],["跑步","pǎobù","бегать"],["朋友","péngyǒu","друг"],["啤酒","píjiǔ","пиво"],["便宜","piányi","дешёвый"],["票","piào","билет"],["漂亮","piàoliàng","красивый"],["苹果","píngguǒ","яблоко"],["葡萄","pútáo","виноград"],["普通话","pǔtōnghuà","путунхуа"],["七","qī","семь"],["妻子","qīzǐ","жена"],["其实","qíshí","на самом деле"],["其他","qítā","другой"],["骑","qí","ездить верхом"],["奇怪","qíguài","странный"],["起床","qǐchuáng","вставать"],["千","qiān","тысяча"],["铅笔","qiānbǐ","карандаш"],["钱","qián","деньги"],["前面","qiánmiàn","впереди"],["清楚","qīngchǔ","ясный"],["晴","qíng","ясно (о погоде)"],["请","qǐng","пожалуйста"],["秋","qiū","осень"],["去","qù","идти, ехать"],["去年","qùnián","прошлый год"],["裙子","qúnzi","юбка"],["然后","ránhòu","затем"],["让","ràng","позволять"],["热","rè","горячий"],["热情","rèqíng","радушный"],["人","rén","человек"],["认识","rènshí","знать (кого-то)"],["认为","rènwéi","считать, полагать"],["认真","rènzhēn","серьёзный"],["日","rì","день, солнце"],["容易","róngyì","лёгкий"],["如果","rúguǒ","если"],["三","sān","три"],["伞","sǎn","зонт"],["商店","shāngdiàn","магазин"],["上","shàng","верх, на"],["上班","shàngbān","идти на работу"],["上网","shàngwǎng","выходить в интернет"],["上午","shàngwǔ","до полудня"],["少","shǎo","мало"],["谁","shuí","кто"],["身体","shēntǐ","тело"],["什么","shénme","что"],["生病","shēngbìng","болеть"],["生气","shēngqì","сердиться"],["生日","shēngrì","день рождения"],["声音","shēngyīn","звук"],["十","shí","десять"],["时候","shíhòu","время, момент"],["时间","shíjiān","время"],["使","shǐ","заставлять"],["是","shì","быть, есть"],["世界","shìjiè","мир"],["事情","shìqíng","дело"],["手表","shǒubiǎo","наручные часы"],["手机","shǒujī","мобильный телефон"],["瘦","shòu","худой"],["书","shū","книга"],["舒服","shūfú","удобный, приятный"],["叔叔","shūshū","дядя"],["树","shù","дерево"],["数学","shùxué","математика"],["刷牙","shuāyá","чистить зубы"],["双","shuāng","пара"],["水","shuǐ","вода"],["水果","shuǐguǒ","фрукты"],["水平","shuǐpíng","уровень"],["睡觉","shuìjiào","спать"],["说话","shuōhuà","говорить"],["司机","sījī","водитель"],["四","sì","четыре"],["送","sòng","дарить, провожать"],["虽然","suīrán","хотя"],["岁","suì","лет (возраст)"],["所以","suǒyǐ","поэтому"],["他","tā","он"],["她","tā","она"],["它","tā","оно"],["太","tài","слишком"],["太阳","tàiyáng","солнце"],["糖","táng","сахар, конфета"],["特别","tèbié","особенно"],["疼","téng","болеть, больно"],["踢足球","tīzúqiú","играть в футбол"],["题","tí","задача, тема"],["提高","tígāo","повышать"],["体育","tǐyù","физкультура"],["天气","tiānqì","погода"],["甜","tián","сладкий"],["条","tiáo","(сч. слово: длинные предметы)"],["跳舞","tiàowǔ","танцевать"],["听","tīng","слушать"],["同事","tóngshì","коллега"],["同学","tóngxué","одноклассник"],["同意","tóngyì","соглашаться"],["头发","tóufà","волосы"],["突然","tūrán","вдруг"],["图书馆","túshūguǎn","библиотека"],["腿","tuǐ","нога"],["外","wài","снаружи"],["完","wán","закончить"],["完成","wánchéng","завершить"],["玩","wán","играть"],["碗","wǎn","миска"],["晚上","wǎnshàng","вечер"],["万","wàn","десять тысяч"],["忘记","wàngjì","забывать"],["喂","wèi","алло"],["为","wèi","для, ради"],["为了","wèile","чтобы"],["为什么","wèishénme","почему"],["位","wèi","(вежл. сч. слово для людей)"],["文化","wénhuà","культура"],["问","wèn","спрашивать"],["问题","wèntí","вопрос"],["我","wǒ","я"],["我们","wǒmen","мы"],["五","wǔ","пять"],["西","xī","запад"],["西瓜","xīguā","арбуз"],["希望","xīwàng","надеяться"],["习惯","xíguàn","привычка"],["洗","xǐ","мыть"],["洗手间","xǐshǒujiān","туалет"],["洗澡","xǐzǎo","мыться"],["喜欢","xǐhuān","нравиться"],["下","xià","низ, под"],["下午","xiàwǔ","после полудня"],["下雨","xiàyǔ","идёт дождь"],["夏","xià","лето"],["先","xiān","сначала"],["先生","xiānshēng","господин, муж"],["现在","xiànzài","сейчас"],["香蕉","xiāngjiāo","банан"],["相同","xiāngtóng","одинаковый"],["相信","xiāngxìn","верить"],["想","xiǎng","хотеть, думать"],["向","xiàng","к, в сторону"],["像","xiàng","быть похожим"],["小","xiǎo","маленький"],["小姐","xiǎojiě","девушка"],["小时","xiǎoshí","час"],["小心","xiǎoxīn","осторожно"],["笑","xiào","смеяться"],["校长","xiàozhǎng","директор школы"],["些","xiē","несколько"],["鞋","xié","обувь"],["写","xiě","писать"],["谢谢","xièxiè","спасибо"],["新","xīn","новый"],["新闻","xīnwén","новости"],["新鲜","xīnxiān","свежий"],["信","xìn","письмо"],["星期","xīngqī","неделя"],["行李箱","xínglǐxiāng","чемодан"],["姓","xìng","фамилия"],["兴趣","xìngqù","интерес"],["熊猫","xióngmāo","панда"],["休息","xiūxī","отдыхать"],["需要","xūyào","нуждаться"],["选择","xuǎnzé","выбирать"],["学生","xuéshēng","ученик"],["学习","xuéxí","учиться"],["学校","xuéxiào","школа"],["雪","xuě","снег"],["颜色","yánsè","цвет"],["眼镜","yǎnjìng","очки"],["眼睛","yǎnjīng","глаза"],["羊肉","yángròu","баранина"],["要求","yāoqiú","требовать"],["药","yào","лекарство"],["要","yào","хотеть, нужно"],["爷爷","yéyé","дедушка"],["也","yě","тоже"],["一","yī","один"],["衣服","yīfú","одежда"],["医生","yīshēng","врач"],["医院","yīyuàn","больница"],["一定","yídìng","обязательно"],["一共","yīgòng","всего"],["一会儿","yīhuìer","немного, ненадолго"],["一样","yīyàng","одинаково"],["以后","yǐhòu","после"],["以前","yǐqián","раньше"],["以为","yǐwéi","думать (ошибочно)"],["已经","yǐjīng","уже"],["椅子","yǐzi","стул"],["一般","yìbān","обычно"],["一边","yībiān","одновременно"],["一起","yìqǐ","вместе"],["一直","yìzhí","всё время"],["意思","yìsi","смысл"],["阴","yīn","пасмурно"],["因为","yīnwèi","потому что"],["音乐","yīnyuè","музыка"],["银行","yínháng","банк"],["应该","yīnggāi","следует"],["影响","yǐngxiǎng","влиять"],["用","yòng","использовать"],["游戏","yóuxì","игра"],["游泳","yóuyǒng","плавать"],["有","yǒu","иметь, есть"],["有名","yǒumíng","известный"],["又","yòu","снова (уже было)"],["右边","yòubiān","справа"],["鱼","yú","рыба"],["遇到","yùdào","встретить"],["元","yuán","юань"],["远","yuǎn","далёкий"],["愿意","yuànyì","желать"],["月","yuè","месяц"],["月亮","yuèliàng","луна"],["越","yuè","всё более"],["云","yún","облако"],["运动","yùndòng","спорт"],["在","zài","быть в, находиться"],["再","zài","снова (будет)"],["再见","zàijiàn","до свидания"],["早上","zǎoshàng","утро"],["怎么","zěnme","как"],["怎么样","zěnmeyàng","как (дела)"],["站","zhàn","стоять"],["张","zhāng","(сч. слово: плоские предметы)"],["丈夫","zhàngfū","муж"],["着急","zháojí","волноваться"],["找","zhǎo","искать"],["照顾","zhàogù","ухаживать"],["照片","zhàopiān","фото"],["照相机","zhàoxiàngjī","фотоаппарат"],["这","zhè","этот"],["着","zhe","(частица длительности)"],["真","zhēn","правда, настоящий"],["正在","zhèngzài","в процессе (сейчас)"],["知道","zhīdào","знать"],["只","zhī","(сч. слово: животные)"],["中国","zhōngguó","Китай"],["中间","zhōngjiān","середина"],["中午","zhōngwǔ","полдень"],["终于","zhōngyú","наконец"],["种","zhǒng","вид, сорт"],["重要","zhòngyào","важный"],["周末","zhōumò","выходные"],["主要","zhǔyào","главный"],["住","zhù","жить"],["祝","zhù","желать"],["注意","zhùyì","обращать внимание"],["准备","zhǔnbèi","готовить, готовиться"],["桌子","zhuōzi","стол"],["字","zì","иероглиф"],["字典","zìdiǎn","словарь"],["自己","zìjǐ","сам"],["自行车","zìxíngchē","велосипед"],["总是","zǒngshì","всегда"],["走","zǒu","идти, уходить"],["最","zuì","самый"],["最近","zuìjìn","недавно"],["昨天","zuótiān","вчера"],["左边","zuǒbiān","слева"],["坐","zuò","сидеть"],["做","zuò","делать"],["作业","zuòyè","домашнее задание"],["作用","zuòyòng","роль, действие"]];
 const $=s=>document.querySelector(s);
 let S={st:{},tab:'cards',dir:0,f:'all'};
 try{const r=localStorage.getItem('hsk3');if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
-const save=()=>{try{localStorage.setItem('hsk3',JSON.stringify(S))}catch(e){}};
+const save=()=>{try{localStorage.setItem('hsk3',JSON.stringify(S))}catch(e){}cloudQ()};
 const sh=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 let VZ=[];
@@ -108,14 +119,68 @@ function say(i){
   u.onerror=ev=>{if(ev.error&&ev.error!=='canceled'&&ev.error!=='interrupted')toast(NOVOICE)};
   try{if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();speechSynthesis.resume();speechSynthesis.speak(u)}catch(e){toast(NOVOICE)}
 }
-const dirChip=()=>`<button class="chip" data-a="dir">${S.dir?'Рус → 汉':'汉 → Рус'}</button>`;
+const dirChip=()=>`<button class="chip" data-a="dir">${S.dir?'Рус → 汉':'汉 → Рус'}</button>`+catChip();
 const all=()=>D.map((_,i)=>i);
+const CATN=["Семья и люди", "Тело и здоровье", "Еда и напитки", "Одежда и цвета", "Дом и быт", "Город и транспорт", "Место и направления", "Школа и учёба", "Работа и деньги", "Время и даты", "Природа и животные", "Числа и меры", "Отдых и спорт", "Качества и чувства", "Действия", "Вежливость и фразы", "Абстрактные слова", "Служебные слова"],CATI=[0, 17, 13, 14, 12, 13, 11, 17, 0, 17, 3, 11, 7, 14, 9, 16, 8, 8, 8, 3, 1, 7, 4, 6, 5, 17, 17, 1, 17, 17, 12, 17, 16, 14, 12, 17, 0, 5, 4, 15, 17, 17, 2, 2, 14, 10, 17, 2, 17, 13, 14, 12, 5, 3, 7, 5, 2, 14, 14, 14, 5, 4, 17, 3, 5, 9, 7, 17, 13, 17, 13, 14, 12, 4, 14, 13, 0, 14, 13, 2, 17, 17, 14, 17, 17, 17, 4, 14, 13, 0, 6, 5, 5, 17, 9, 4, 4, 4, 12, 8, 6, 16, 9, 7, 10, 17, 7, 13, 17, 12, 13, 15, 13, 17, 11, 1, 17, 0, 1, 11, 1, 14, 2, 13, 4, 14, 13, 17, 5, 9, 9, 2, 6, 7, 4, 17, 1, 9, 13, 13, 14, 0, 17, 14, 17, 17, 17, 5, 11, 8, 5, 8, 10, 12, 10, 14, 16, 17, 8, 5, 2, 17, 17, 14, 17, 17, 17, 0, 13, 7, 13, 2, 9, 2, 17, 10, 3, 7, 17, 3, 6, 5, 10, 4, 12, 13, 15, 10, 14, 3, 14, 7, 14, 8, 5, 17, 5, 2, 17, 16, 17, 11, 14, 9, 4, 14, 13, 17, 1, 14, 14, 7, 8, 1, 14, 7, 14, 5, 14, 14, 12, 9, 0, 14, 14, 14, 9, 14, 6, 17, 14, 8, 11, 9, 13, 17, 14, 7, 14, 14, 2, 14, 14, 14, 14, 7, 1, 13, 17, 14, 9, 7, 0, 4, 1, 13, 3, 8, 13, 13, 2, 14, 3, 13, 7, 17, 13, 13, 6, 14, 6, 16, 7, 1, 7, 11, 17, 14, 0, 11, 11, 5, 5, 5, 3, 0, 10, 17, 17, 8, 8, 13, 13, 13, 10, 3, 17, 15, 17, 0, 4, 11, 2, 2, 2, 14, 9, 0, 14, 17, 17, 0, 6, 0, 13, 13, 17, 14, 0, 9, 7, 13, 10, 0, 2, 14, 0, 0, 12, 2, 6, 1, 12, 0, 2, 8, 5, 13, 2, 2, 7, 11, 0, 17, 17, 12, 13, 4, 11, 7, 8, 6, 13, 10, 15, 9, 14, 9, 3, 17, 14, 13, 13, 0, 14, 14, 13, 9, 13, 17, 11, 4, 5, 6, 8, 8, 9, 13, 0, 1, 17, 1, 13, 9, 16, 11, 9, 9, 14, 17, 16, 16, 4, 4, 1, 7, 13, 0, 10, 7, 4, 17, 2, 2, 16, 4, 14, 8, 11, 14, 17, 9, 17, 0, 0, 17, 17, 10, 2, 17, 1, 12, 7, 14, 7, 10, 2, 17, 12, 14, 0, 0, 14, 1, 17, 7, 1, 6, 14, 14, 12, 2, 9, 11, 14, 15, 17, 17, 17, 17, 7, 7, 7, 0, 0, 11, 6, 2, 14, 16, 4, 4, 4, 14, 6, 9, 10, 9, 17, 0, 9, 2, 13, 14, 14, 6, 17, 13, 0, 9, 13, 13, 7, 17, 3, 7, 15, 13, 12, 2, 8, 9, 5, 0, 12, 10, 12, 14, 14, 7, 7, 7, 10, 3, 1, 1, 2, 14, 1, 14, 0, 17, 11, 3, 1, 1, 17, 11, 9, 17, 9, 9, 14, 17, 4, 17, 17, 17, 17, 16, 10, 17, 12, 5, 17, 14, 14, 12, 12, 17, 13, 17, 6, 2, 14, 8, 6, 14, 9, 10, 17, 10, 12, 14, 17, 15, 9, 17, 17, 14, 17, 0, 13, 14, 14, 12, 4, 17, 17, 17, 17, 14, 17, 5, 6, 9, 17, 17, 13, 9, 17, 14, 15, 14, 14, 4, 7, 7, 17, 5, 17, 14, 17, 9, 9, 6, 14, 14, 7, 16];let wcat='';
+const inC=i=>!S.cat||CATN[CATI[i]]===S.cat;
+const catChip=()=>S.cat?`<button class="chip on" data-a="catx">Тема: ${S.cat} ✕</button>`:'';
+const rst0=()=>{deck=[];pos=0;Q=null;wd=[];wp=0;sd=[];sp=0};
+function catRow(){const n=CATN.map((_,c)=>all().filter(i=>CATI[i]===c)),k=CATN.indexOf(wcat);
+  return `<div class="chips cats"><button class="chip ${!wcat?'on':''}" data-a="wc" data-v="">Все темы</button>${CATN.map((c,j)=>`<button class="chip ${wcat===c?'on':''}" data-a="wc" data-v="${c}">${c} ${n[j].length}</button>`).join('')}</div>`+(wcat?`<div class="btns"><button class="big" data-a="learn">Учить тему: ${wcat} (знаю ${n[k].filter(i=>S.st[i]===1).length} из ${n[k].length})</button></div>`:'')}
+
+/* ---- Telegram: тема и облачное сохранение ---- */
+var TG=null;try{if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData){TG=Telegram.WebApp;TG.ready();TG.expand();if(TG.colorScheme)document.documentElement.dataset.theme=TG.colorScheme}}catch(e){TG=null}
+if(!S.ts&&Object.keys(S.st).length)S.ts=1;
+let cq=0;
+function cloudQ(){if(!TG||!TG.CloudStorage)return;clearTimeout(cq);cq=setTimeout(cloudPush,4000)}
+function snap(){return JSON.stringify({st:S.st,notes:S.notes||{},sr:S.sr,xp:S.xp,days:S.days,best:S.best,dq:S.dq,wkb:S.wkb,ts:S.ts||0})}
+function cloudPush(){try{const s=snap(),n=Math.ceil(s.length/3000),C=TG.CloudStorage;let k=0;
+  const next=()=>{if(k<n){C.setItem('p'+k,s.slice(k*3000,k*3000+3000),(e)=>{if(e)return;k++;next()})}else{C.setItem('pn',String(n),()=>{C.setItem('pts',String(S.ts||0))})}};next()}catch(e){}}
+function cloudPull(){try{const C=TG.CloudStorage;C.getItems(['pn','pts'],(e,v)=>{if(e||!v)return;const n=+v.pn||0,ts=+v.pts||0;
+  if(!n){if(S.ts)cloudPush();return}
+  if(ts<=(S.ts||0)){if((S.ts||0)>ts)cloudPush();return}
+  const keys=Array.from({length:n},(_,i)=>'p'+i);
+  C.getItems(keys,(e2,r)=>{if(e2||!r)return;try{const o=JSON.parse(keys.map(k=>r[k]).join(''));
+    Object.assign(S,{st:o.st||{},notes:o.notes||{},sr:o.sr||{},xp:o.xp||0,days:o.days||{},best:o.best||0,dq:o.dq||{},wkb:o.wkb||0,ts:o.ts||0});
+    save();deck=[];pos=0;Q=null;wd=[];wp=0;sd=[];sp=0;go();toast('Прогресс загружен из Telegram')}catch(_){}})})}catch(e){}}
+
+/* ---- Повторения, серии, квесты ---- */
+const INT=[0,1,2,4,8,16],dn=()=>{const d=new Date();return Math.floor((d.getTime()-d.getTimezoneOffset()*6e4)/864e5)};
+S.sr=S.sr||{};S.xp=S.xp||0;S.days=S.days||{};S.best=S.best||0;S.dq=S.dq||{};S.wkb=S.wkb||0;
+(()=>{const t=dn();for(const i in S.st){if(!S.sr[i])S.sr[i]=S.st[i]===1?[1,t+1,0]:[0,t,0]}})();
+const isDue=i=>!!S.sr[i]&&S.sr[i][1]<=dn();
+const dueN=()=>all().filter(isDue).length;
+const inF=i=>inC(i)&&(S.f==='all'||(S.f==='due'?isDue(i):S.f==='unk'?S.st[i]===2:!S.st[i]));
+const HEAT=[['Новые','var(--line)'],['Сырые','#d1495b'],['Средние','#e9a23b'],['Почти готовы','#7bb661'],['Намертво','#0f8b6d']];
+const heat=i=>{const r=S.sr[i];return !r?0:r[0]<=1?1:r[0]<=3?2:r[0]===4?3:4};
+const cnt=l=>all().filter(i=>heat(i)===l).length;
+const QS=[['n',20,'Ответить на 20 слов',30],['ok',10,'10 верных ответов',30],['rev',5,'Повторить 5 слов из очереди',40]];
+const BG=[['🥟3','Серия 3 дня',()=>S.best>=3],['🥟7','Неделя подряд',()=>S.best>=7],['🥟14','Две недели',()=>S.best>=14],['🥟30','Месяц',()=>S.best>=30],['💎10','10 слов намертво',()=>cnt(4)>=10],['💎50','50 слов намертво',()=>cnt(4)>=50]];
+function streak(){let t=dn(),c=0;if(!S.days[t])t--;while(S.days[t]){c++;t--}return c}
+function bar(){const b=$('#bar');if(!b)return;b.innerHTML=`<span>🥟 ${streak()}</span><span>Ур. ${S.xp/200+1|0}</span><span>Сегодня ${S.days[dn()]||0}/20</span><span>Очередь ${dueN()}</span>`}
+function grade(i,ok){
+  const t=dn(),was=isDue(i),r=S.sr[i]||[0,t,0];
+  if(ok){r[0]=Math.min(5,r[0]+1);r[1]=t+INT[r[0]]}else{r[0]=Math.max(0,r[0]-2);r[1]=t;r[2]=(r[2]||0)+1}
+  S.sr[i]=r;S.ts=Date.now();S.days[t]=(S.days[t]||0)+1;S.xp+=ok?10:2;
+  if(S.dq.d!==t)S.dq={d:t,n:0,ok:0,rev:0,c:{}};
+  S.dq.n++;if(ok)S.dq.ok++;if(was)S.dq.rev++;
+  QS.forEach(([k,g,l,x])=>{if(S.dq[k]>=g&&!S.dq.c[k]){S.dq.c[k]=1;S.xp+=x;toast('Квест выполнен: '+l+'. +'+x+' очков')}});
+  const s=streak();if(s>S.best)S.best=s;
+  if(s<7)S.wkb=0;else if(Math.floor(s/7)>S.wkb){S.wkb=Math.floor(s/7);S.xp+=100;toast('Неделя подряд! +100 очков')}
+  save();bar();
+}
+function rPanel(){
+  const t=dn(),q=S.dq.d===t?S.dq:{n:0,ok:0,rev:0,c:{}},c=HEAT.map((_,l)=>cnt(l)),lap=Object.values(S.sr).filter(r=>r[2]>=2).length;
+  return `<h3 class="h3">Прожарка слов</h3><div class="stack">${c.map((x,l)=>`<i style="width:${x/D.length*100}%;background:${HEAT[l][1]}"></i>`).join('')}</div><div class="legend">${HEAT.map((h,l)=>`<span><i style="background:${h[1]}"></i>${h[0]}: ${c[l]}</span>`).join('')}</div><p class="hint">Часто забываются: ${lap}. К повторению сегодня: ${dueN()}.</p>
+  <h3 class="h3">Квесты на сегодня</h3>${QS.map(([k,g,l,x])=>`<div class="qst ${q.c[k]?'dn':''}"><div class="qt"><span>${l}</span><b>${Math.min(q[k],g)}/${g}</b></div><div class="prog"><i style="width:${Math.min(q[k],g)/g*100}%"></i></div><span class="hint">Награда: ${x} очков</span></div>`).join('')}
+  <h3 class="h3">Награды</h3><div class="bgs">${BG.map(([e,l,f])=>`<div class="bg ${f()?'on':''}"><b>${e}</b><span>${l}</span></div>`).join('')}</div><p class="hint">Очки: ${S.xp}. Лучшая серия: ${S.best} дн. За каждую полную неделю подряд +100 очков.</p>`;
+}
 
 /* ---- Карточки ---- */
 let deck=[],pos=0,fl=false;
-function mk(){deck=sh(all().filter(i=>S.f==='all'||(S.f==='unk'?S.st[i]===2:!S.st[i])));pos=0;fl=false}
+function mk(){deck=sh(all().filter(i=>inF(i)));pos=0;fl=false}
 function rCards(){
-  let h=`<div class="chips">${[['all','Все'],['unk','Не знаю'],['new','Новые']].map(([k,l])=>`<button class="chip ${S.f===k?'on':''}" data-a="f" data-v="${k}">${l}</button>`).join('')}${dirChip()}</div>`;
+  let h=`<div class="chips">${[['due','Повторить ('+dueN()+')'],['all','Все'],['unk','Не знаю'],['new','Новые']].map(([k,l])=>`<button class="chip ${S.f===k?'on':''}" data-a="f" data-v="${k}">${l}</button>`).join('')}${dirChip()}</div>`;
   if(pos>=deck.length){
     h+=`<div class="done"><h2>${deck.length?'Колода пройдена':'Здесь пока пусто'}</h2><p class="hint">${deck.length?'Слова «Не знаю» можно повторить отдельно.':'Выберите другой фильтр.'}</p><button class="big" data-a="again">Начать заново</button></div>`;
   }else{
@@ -137,7 +202,7 @@ function bindCard(){
 }
 function ans(k){
   const c=$('#card');if(!c||pos>=deck.length)return;
-  S.st[deck[pos]]=k?1:2;save();
+  S.st[deck[pos]]=k?1:2;grade(deck[pos],k);
   c.style.transition='transform .2s,opacity .2s';c.style.transform=`translateX(${k?520:-520}px) rotate(${k?25:-25}deg)`;c.style.opacity=0;
   setTimeout(()=>{pos++;fl=false;rCards()},180);
 }
@@ -146,7 +211,7 @@ function ans(k){
 let Q=null;
 function startQ(pool){
   pool=pool||(Q&&Q.pool)||'all';
-  let idx=all().filter(i=>pool==='all'||S.st[i]===2);
+  let idx=all().filter(i=>inC(i)&&(pool==='all'||S.st[i]===2));
   if(!idx.length){idx=all();pool='all'}
   sh(idx);Q={pool,list:idx.slice(0,10),i:0,ok:0,streak:0,pick:null};mkOpts();rQuiz();
 }
@@ -169,14 +234,15 @@ function rQuiz(){
 }
 function pick(j){
   if(Q.pick!==null)return;const i=Q.list[Q.i];Q.pick=j;
-  if(j===i){Q.ok++;Q.streak++;S.st[i]=1}else{Q.streak=0;S.st[i]=2}
+  if(j===i){Q.ok++;Q.streak++;S.st[i]=1}else{Q.streak=0;S.st[i]=2}grade(i,j===i);
   save();rQuiz();
 }
 
 /* ---- Письмо ---- */
 let wd=[],wp=0;
-const fchips=()=>[['all','Все'],['unk','Не знаю'],['new','Новые']].map(([k,l])=>`<button class="chip ${S.f===k?'on':''}" data-a="f" data-v="${k}">${l}</button>`).join('');
-function mkW(){wd=sh(all().filter(i=>S.f==='all'||(S.f==='unk'?S.st[i]===2:!S.st[i])));wp=0}
+const fchips0=()=>[['due','Повторить ('+dueN()+')'],['all','Все'],['unk','Не знаю'],['new','Новые']].map(([k,l])=>`<button class="chip ${S.f===k?'on':''}" data-a="f" data-v="${k}">${l}</button>`).join('');
+const fchips=()=>fchips0()+catChip();
+function mkW(){wd=sh(all().filter(i=>inF(i)));wp=0}
 function rWrite(){
   let h=`<div class="chips">${fchips()}</div>`;
   if(wp>=wd.length){
@@ -230,12 +296,12 @@ function match(cv,text){
   const c=tn?tk/tn:0,p=vn?vk/vn:0;
   return c+p?Math.round(200*c*p/(c+p)):0;
 }
-function wans(k){S.st[wd[wp]]=k?1:2;save();wp++;rWrite()}
+function wans(k){S.st[wd[wp]]=k?1:2;grade(wd[wp],k);wp++;rWrite()}
 
 /* ---- Речь ---- */
 let sd=[],sp=0,rec=null,G={tries:0,res:null,pass:false,on:false};
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
-function mkS(){sd=sh(all().filter(i=>S.f==='all'||(S.f==='unk'?S.st[i]===2:!S.st[i])));sp=0}
+function mkS(){sd=sh(all().filter(i=>inF(i)));sp=0}
 function startWord(){
   G={tries:0,res:null,pass:false,on:wantMic};
   if(sp<sd.length)say(sd[sp]);
@@ -321,14 +387,14 @@ function rowH(i){
 function fillList(){
   const q=wq.trim().toLowerCase(),nq=norm(q),nt=S.notes||{};
   const idx=all().filter(i=>{
-    if(ws!=='all'&&String(S.st[i]||0)!==ws)return false;
+    if(wcat&&CATN[CATI[i]]!==wcat)return false;if(ws!=='all'&&String(S.st[i]||0)!==ws)return false;
     if(!q)return true;
     return D[i][0].includes(q)||N[i].includes(nq)||D[i][2].toLowerCase().includes(q)||(nt[i]||'').toLowerCase().includes(q);
   });
   $('#list').innerHTML=`<div class="cnt">Найдено: ${idx.length}</div>`+idx.slice(0,150).map(rowH).join('')+(idx.length>150?'<p class="hint">Показаны первые 150. Уточните поиск.</p>':'');
 }
 function rWords(){
-  $('#main').innerHTML=`<div class="chips">${[['all','Все'],['1','Знаю'],['2','Не знаю'],['0','Новые']].map(([k,l])=>`<button class="chip ${ws===k?'on':''}" data-a="ws" data-v="${k}">${l}</button>`).join('')}</div><input id="sq" class="sq" type="search" placeholder="Поиск: иероглиф, пиньинь или перевод" value="${esc(wq)}"><div id="list"></div><p class="hint">Кружок слева меняет статус. Нажмите на слово, чтобы добавить заметку.</p>`;
+  $('#main').innerHTML=catRow()+`<div class="chips">${[['all','Все'],['1','Знаю'],['2','Не знаю'],['0','Новые']].map(([k,l])=>`<button class="chip ${ws===k?'on':''}" data-a="ws" data-v="${k}">${l}</button>`).join('')}</div><input id="sq" class="sq" type="search" placeholder="Поиск: иероглиф, пиньинь или перевод" value="${esc(wq)}"><div id="list"></div><p class="hint">Кружок слева меняет статус. Нажмите на слово, чтобы добавить заметку.</p>`;
   $('#sq').oninput=e=>{wq=e.target.value;fillList()};fillList();
 }
 
@@ -336,7 +402,7 @@ function rWords(){
 let rs=false,msg='';
 function rStats(){
   const v=Object.values(S.st),k=v.filter(x=>x===1).length,u=v.filter(x=>x===2).length,n=D.length-k-u,p=x=>x/D.length*100;
-  $('#main').innerHTML=`<div class="st"><div><b style="color:var(--ok)">${k}</b><span>Знаю</span></div><div><b style="color:var(--bad)">${u}</b><span>Не знаю</span></div><div><b>${n}</b><span>Новые</span></div></div>
+  $('#main').innerHTML=rPanel()+`<div class="st"><div><b style="color:var(--ok)">${k}</b><span>Знаю</span></div><div><b style="color:var(--bad)">${u}</b><span>Не знаю</span></div><div><b>${n}</b><span>Новые</span></div></div>
   <div class="stack"><i style="width:${p(k)}%;background:var(--ok)"></i><i style="width:${p(u)}%;background:var(--bad)"></i></div>
   <p class="hint">Выучено ${Math.round(p(k))}% из ${D.length} слов</p>
   <h3 class="h3">Перенос прогресса</h3><p class="hint left">Нажмите «Экспорт», скопируйте код и вставьте его на другом устройстве в это поле, затем нажмите «Импорт». Код включает статусы и заметки.</p>
@@ -345,7 +411,7 @@ function rStats(){
   <button class="rst" data-a="reset">${rs?'Нажмите ещё раз, чтобы стереть прогресс':'Сбросить прогресс'}</button>`;
 }
 
-function go(){
+function go(){bar();{const x=$('#ext');if(x)x.hidden=!(TG&&S.tab==='speak')}
   wantMic=false;try{if(rec)rec.abort()}catch(_){}
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===S.tab));
   if(S.tab==='cards'){if(!deck.length&&pos===0)mk();rCards()}
@@ -379,14 +445,18 @@ document.addEventListener('click',e=>{
   else if(a==='sspk')say(sd[sp]);
   else if(a==='smic')wantMic?micStop():micStart();
   else if(a==='snext'){sp++;startWord()}
-  else if(a==='sskip'){S.st[sd[sp]]=2;save();sp++;startWord()}
+  else if(a==='sskip'){S.st[sd[sp]]=2;grade(sd[sp],false);sp++;startWord()}
   else if(a==='sagain'){mkS();startWord()}
-  else if(a==='cyc'){e.preventDefault();const i=+v,n=((S.st[i]||0)+1)%3;if(n===0)delete S.st[i];else S.st[i]=n;save();b.className='dot s'+n;b.textContent=DOT[n]}
+  else if(a==='cyc'){e.preventDefault();const i=+v,n=((S.st[i]||0)+1)%3;if(n===0)delete S.st[i];else S.st[i]=n;S.ts=Date.now();save();b.className='dot s'+n;b.textContent=DOT[n]}
   else if(a==='spk2')say(+v);
   else if(a==='spk')say(deck[pos]);
   else if(a==='spkq')say(Q.list[Q.i]);
+  else if(a==='wc'){wcat=v;rWords()}
+  else if(a==='learn'){S.cat=wcat;S.f='all';S.tab='cards';save();rst0();go()}
+  else if(a==='catx'){S.cat='';save();rst0();go()}
+  else if(a==='ext'){try{TG.openLink(location.href)}catch(_){}}
   else if(a==='exp'){
-    const code=btoa(unescape(encodeURIComponent(JSON.stringify({st:S.st,notes:S.notes||{}}))));
+    const code=btoa(unescape(encodeURIComponent(JSON.stringify({st:S.st,notes:S.notes||{},sr:S.sr,xp:S.xp,days:S.days,best:S.best}))));
     const io=$('#io');io.value=code;io.select();
     const m=document.querySelectorAll('.hint');const h=m[m.length-1];
     try{navigator.clipboard.writeText(code).then(()=>{h.textContent='Код скопирован.'},()=>{h.textContent='Скопируйте код из поля вручную.'})}catch(_){h.textContent='Скопируйте код из поля вручную.'}
@@ -394,16 +464,17 @@ document.addEventListener('click',e=>{
   else if(a==='imp'){
     try{const o=JSON.parse(decodeURIComponent(escape(atob($('#io').value.trim()))));
       if(!o||typeof o.st!=='object')throw 0;
-      S.st=o.st;S.notes=o.notes||{};save();deck=[];pos=0;Q=null;wd=[];wp=0;msg='Загружено слов с отметкой: '+Object.keys(S.st).length;
+      S.st=o.st;S.notes=o.notes||{};S.sr=o.sr||{};S.xp=o.xp||0;S.days=o.days||{};S.best=o.best||0;S.ts=Date.now();if(!o.sr){const t=dn();for(const i in S.st)S.sr[i]=S.st[i]===1?[1,t+1,0]:[0,t,0]}save();deck=[];pos=0;Q=null;wd=[];wp=0;msg='Загружено слов с отметкой: '+Object.keys(S.st).length;
     }catch(_){msg='Код не подошёл. Проверьте, что он скопирован целиком.'}
     rStats();
   }
-  else if(a==='reset'){if(rs){S.st={};save();rs=false;deck=[];pos=0;Q=null;wd=[];wp=0;sd=[];sp=0}else rs=true;rStats()}
+  else if(a==='reset'){if(rs){S.st={};S.sr={};S.xp=0;S.days={};S.best=0;S.dq={};S.wkb=0;S.ts=Date.now();save();rs=false;deck=[];pos=0;Q=null;wd=[];wp=0;sd=[];sp=0}else rs=true;rStats()}
 });
 document.addEventListener('input',e=>{
   const t=e.target;if(!t.matches||!t.matches('textarea[data-i]'))return;
-  S.notes=S.notes||{};S.notes[t.dataset.i]=t.value;save();
+  S.notes=S.notes||{};S.notes[t.dataset.i]=t.value;S.ts=Date.now();save();
   const n=t.closest('details').querySelector('.nt');if(n)n.textContent=t.value?'📝':'';
 });
+if(TG)cloudPull();
 go();
 </script></body></html>
