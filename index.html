@@ -269,7 +269,7 @@ let deck=[],pos=0,fl=false;
 function mk(){deck=sh(all().filter(i=>inF(i)));pos=0;fl=false}
 const practiceModes=()=>[['quiz','Тест'],['write','Письмо'],['speak','Речь'],['tone','Тоны']].map(([k,l])=>`<button class="${S.tab===k?'on':''}" data-a="tab" data-v="${k}">${l}</button>`).join('');
 function rCards(){
-  let h=`<div class="chips">${[['due','Повторить ('+dueN()+')'],['all','Все'],['unk','Не знаю'],['new','Новые']].map(([k,l])=>`<button class="chip ${S.f===k?'on':''}" data-a="f" data-v="${k}">${l}</button>`).join('')}${dirChip()}</div>`;
+  let h=`<div class="chips">${[['all','Все'],['unk','Не знаю'],['new','Новые']].map(([k,l])=>`<button class="chip ${S.f===k?'on':''}" data-a="f" data-v="${k}">${l}</button>`).join('')}${dirChip()}</div>`;
   if(pos>=deck.length){
     h+=`<div class="done"><h2>${deck.length?'Колода пройдена':'Здесь пока пусто'}</h2><p class="hint">${deck.length?'Слова «Не знаю» можно повторить отдельно.':'Выберите другой фильтр.'}</p><button class="big" data-a="again">Начать заново</button></div>`;
   }else{
@@ -688,7 +688,7 @@ function go(){bar();{const x=$('#ext');if(x)x.hidden=!(TG&&S.tab==='speak')}
   wantMic=false;try{if(rec)rec.abort()}catch(_){}
   const section=['quiz','write','speak','tone'].includes(S.tab)?'practice':S.tab==='cards'?'learn':S.tab;
   document.querySelectorAll('nav button').forEach(b=>{const active=b.dataset.section===section;b.classList.toggle('on',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
-  if(S.tab==='cards'){if(!deck.length&&pos===0)mk();rCards()}
+  if(S.tab==='cards'){if(S.f==='due'){S.f='all';save()}if(!deck.length&&pos===0)mk();rCards()}
   else if(S.tab==='quiz'){Q?rQuiz():startQ()}
   else if(S.tab==='write'){if(!wd.length&&wp===0)mkW();rWrite()}
   else if(S.tab==='speak'){if(!sd.length&&sp===0)mkS();startWord()}
