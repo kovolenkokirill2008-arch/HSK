@@ -69,7 +69,7 @@ nav button.on{background:var(--pri);color:var(--onpri)}
 .pad canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
 .ghost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Songti SC","Noto Serif SC",serif;font-weight:700;color:var(--pri);opacity:0;transform:scale(.94);transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1),filter .4s;pointer-events:none;white-space:nowrap}
 .ghost.on{opacity:.35;transform:scale(1)}
-.ghost.mastered{opacity:.52;filter:drop-shadow(0 3px 2px color-mix(in srgb,var(--pri) 45%,transparent))}
+.ghost.mastered{opacity:1;filter:none}
 .sq{width:100%;min-height:48px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 14px;font:16px inherit;margin:4px 0 8px}
 .row{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:7px 0}
 .row summary{display:flex;align-items:center;gap:10px;padding:10px 12px;list-style:none;cursor:pointer}
@@ -692,7 +692,11 @@ document.addEventListener('click',e=>{
     const pc=match($('#cv'),D[wd[wp]][0]),sc=$('#sc');
     sc.className='ban '+(pc>=60?'ok':'bad');
     sc.innerHTML=`<div><b style="font-size:22px">Совпадение ${pc}%</b><div>${pc>=75?'Отлично, форма очень похожа':pc>=50?'Неплохо, форма похожа':pc?'Пока не похоже, попробуйте ещё раз':'Вы ничего не нарисовали'}</div></div>`;
-    sc.hidden=false;say(wd[wp]);$('#gh').classList.add('on');$('#gh').classList.toggle('mastered',pc>=75);$('#b1').hidden=true;$('#b2').hidden=false}
+    sc.hidden=false;say(wd[wp]);
+    const gh=$('#gh');
+    if(pc>75){$('#cv').clear();gh.classList.add('on','mastered')}
+    else{gh.classList.add('on');gh.classList.remove('mastered')}
+    $('#b1').hidden=true;$('#b2').hidden=false}
   else if(a==='wclr'){$('#cv').clear()}
   else if(a==='wyes')wans(true);
   else if(a==='wno')wans(false);
