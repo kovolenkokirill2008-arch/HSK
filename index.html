@@ -3,16 +3,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>HSK 3 — 600 слов</title>
 <style>
-:root{--bg:#f2f5f7;--card:#fff;--ink:#14202e;--mut:#6a7886;--ok:#0f8b6d;--bad:#d1495b;--line:#d9e0e6;--pri:#1f3a5f;--onpri:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1620;--card:#172331;--ink:#e8eef4;--mut:#8fa0b0;--ok:#34c79f;--bad:#f0707f;--line:#2a3a4c;--pri:#7fb0e8;--onpri:#0e1620}}
-:root[data-theme="dark"]{--bg:#0e1620;--card:#172331;--ink:#e8eef4;--mut:#8fa0b0;--ok:#34c79f;--bad:#f0707f;--line:#2a3a4c;--pri:#7fb0e8;--onpri:#0e1620}
+:root{--bg:#f2f5f7;--card:#fff;--ink:#14202e;--mut:#6a7886;--ok:#0f8b6d;--bad:#d1495b;--line:#d9e0e6;--pri:#1f3a5f;--onpri:#fff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1620;--card:#172331;--ink:#e8eef4;--mut:#8fa0b0;--ok:#34c79f;--bad:#f0707f;--line:#2a3a4c;--pri:#7fb0e8;--onpri:#0e1620;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1620;--card:#172331;--ink:#e8eef4;--mut:#8fa0b0;--ok:#34c79f;--bad:#f0707f;--line:#2a3a4c;--pri:#7fb0e8;--onpri:#0e1620;color-scheme:dark}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 button{min-height:44px;touch-action:manipulation}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif;min-height:100vh}
 #app{width:min(100%,760px);margin:0 auto;padding:12px 14px calc(92px + env(safe-area-inset-bottom,0px))}
-nav{position:fixed;z-index:10;left:50%;bottom:calc(8px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(calc(100% - 24px),456px);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:6px;box-shadow:0 6px 24px #0002}
-nav button{min-width:0;border:0;background:none;color:var(--mut);font:600 12px inherit;padding:7px 3px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+nav{position:fixed;z-index:10;left:50%;bottom:calc(8px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);width:min(calc(100% - 24px),540px);display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:4px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:6px;box-shadow:0 6px 24px #0002}
+nav button{min-width:0;border:0;background:none;color:var(--mut);font:600 11px inherit;padding:7px 2px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+nav button span{white-space:nowrap;font-size:10px}
 nav button svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
 nav button.on{background:var(--pri);color:var(--onpri)}
 .subnav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:4px 0 12px;padding:3px 0}
@@ -96,6 +97,15 @@ button:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
 .qst{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin:8px 0}
 .qst.dn{border-color:var(--ok)}.qt{display:flex;justify-content:space-between;font-size:15px}
 .qst .prog{margin:8px 0 4px}
+.settings-card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
+.settings-card h3{font-size:17px;margin:0 0 6px}
+.settings-card .hint{text-align:left;margin:4px 0 12px}
+.settings-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.settings-options.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.settings-options .chip{width:100%;min-height:44px;border-radius:12px;padding:8px 5px;white-space:normal}
+.settings-options .chip.on{background:var(--pri);border-color:var(--pri);color:var(--onpri)}
+.settings-card .io{margin:4px 0}
+.settings-card .btns{margin-top:8px}
 .bgs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .bg{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 4px;text-align:center;opacity:.4}
 .bg.on{opacity:1;border-color:var(--ok)}.bg b{display:block;font-size:20px}.bg span{font-size:12px;color:var(--mut)}
@@ -124,7 +134,7 @@ button:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
 }
 .hz.ph{font-size:clamp(32px,9vw,46px);line-height:1.3;word-break:break-all}.gap{display:inline-block;min-width:1.6em;border-bottom:3px solid var(--pri);color:var(--pri);text-align:center}.gok{color:var(--ok)}
 .ex{margin:0 0 8px;padding:8px 10px;border-radius:10px;background:var(--bg);font-size:14px}.ex b{font-size:18px}.ex span{color:var(--mut)}
-.tile{font:500 26px inherit;padding:10px 14px;border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;background:var(--card);color:var(--ink)}.tile.ghost{display:inline-block;opacity:.25;border-style:dashed}
+.tile{font:500 26px inherit;padding:10px 14px;border:2px solid var(--line);border-bottom-width:4px;border-radius:12px;background:var(--card);color:var(--ink)}.tile-placeholder{display:inline-block;opacity:.35;border-style:dashed}
 .ansrow{min-height:76px;display:flex;flex-wrap:wrap;gap:8px;padding:10px 0;margin:12px 0;border-bottom:2px solid var(--line)}.bankrow{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:16px 0}
 .tslots{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:16px 0}.tsl{min-width:72px;min-height:72px;padding:6px 12px;border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;background:var(--card);color:var(--ink);font:600 28px inherit;display:flex;align-items:center;justify-content:center;gap:6px}.tsl svg{width:40px;height:28px}.tsl.sel{border-color:var(--pri)}.tsl.ok{border-color:var(--ok);color:var(--ok)}.tsl.bad{border-color:var(--bad)}.tsl s{color:var(--bad);font-size:20px}
 .tbtns{display:grid;gap:8px;margin:12px 0}.tbtns.t4{grid-template-columns:repeat(2,minmax(0,1fr))}.tbtns.t5{grid-template-columns:repeat(3,minmax(0,1fr))}.tbtn{min-height:84px;padding:6px 2px;border:2px solid var(--line);border-bottom-width:4px;border-radius:14px;background:var(--card);color:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;font-family:inherit}.tbtn svg,.tsl svg{fill:none;stroke:currentColor;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.tbtn svg{width:36px;height:24px}.tbtn b{font-size:20px}.tbtn small{font-size:12px;color:var(--mut)}.tspk{margin:6px auto 10px;display:block;width:auto;padding:12px 22px}
@@ -154,10 +164,11 @@ button{min-height:0}
 </style></head><body>
 <div id="app">
 <nav aria-label="Основная навигация">
-  <button data-a="section" data-section="learn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14M12 7C9.5 5 6 4.5 3 5v14c3-.5 6.5 0 9 2m0-14c2.5-2 6-2.5 9-2v14c-3-.5-6.5 0-9 2"/></svg><span>Учиться</span></button>
-  <button data-a="section" data-section="practice"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg><span>Практика</span></button>
-  <button data-a="section" data-section="words"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20"/></svg><span>Слова</span></button>
-  <button data-a="section" data-section="stats"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5m0 14h17"/><path d="m7 15 4-4 3 2 6-7"/></svg><span>Прогресс</span></button>
+  <button data-a="section" data-section="learn" aria-label="Учиться"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 7v14M12 7C9.5 5 6 4.5 3 5v14c3-.5 6.5 0 9 2m0-14c2.5-2 6-2.5 9-2v14c-3-.5-6.5 0-9 2"/></svg><span>Учиться</span></button>
+  <button data-a="section" data-section="practice" aria-label="Практика"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg><span>Практика</span></button>
+  <button data-a="section" data-section="words" aria-label="Слова"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21z"/><path d="M4 5.5v13A2.5 2.5 0 0 1 6.5 16H20"/></svg><span>Слова</span></button>
+  <button data-a="section" data-section="stats" aria-label="Прогресс"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5m0 14h17"/><path d="m7 15 4-4 3 2 6-7"/></svg><span>Прогресс</span></button>
+  <button data-a="section" data-section="settings" aria-label="Настройки"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="M19 13.5a7 7 0 0 0 0-3l1.5-1.2-1.5-2.6-1.8.7a7 7 0 0 0-2.6-1.5L14.3 4h-3l-.4 1.9a7 7 0 0 0-2.6 1.5l-1.8-.7L5 9.3l1.5 1.2a7 7 0 0 0 0 3L5 14.7l1.5 2.6 1.8-.7a7 7 0 0 0 2.6 1.5l.4 1.9h3l.4-1.9a7 7 0 0 0 2.6-1.5l1.8.7 1.5-2.6Z"/></svg><span>Настройки</span></button>
 </nav><div id="bar"></div>
 <main id="main"></main>
 <button class="skip" id="ext" data-a="ext" hidden>Микрофон не работает? Открыть в браузере</button>
@@ -168,6 +179,12 @@ const $=s=>document.querySelector(s);
 let S={st:{},tab:'cards',dir:0,f:'all'};
 try{const r=localStorage.getItem('hsk3');if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
 const save=()=>{try{localStorage.setItem('hsk3',JSON.stringify(S))}catch(e){}cloudQ()};
+let TG=null;
+const applyTheme=()=>{
+  const theme=S.theme==='light'||S.theme==='dark'?S.theme:(TG&&TG.colorScheme);
+  if(theme==='light'||theme==='dark')document.documentElement.dataset.theme=theme;
+  else delete document.documentElement.dataset.theme;
+};
 const sh=a=>{for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
 let VZ=[];
@@ -197,8 +214,10 @@ const rst0=()=>{deck=[];pos=0;Q=null;wd=[];wp=0;sd=[];sp=0};
 function catRow(){const n=CATN.map((_,c)=>all().filter(i=>CATI[i]===c)),k=CATN.indexOf(wcat);
   return `<div class="chips cats"><button class="chip ${!wcat?'on':''}" data-a="wc" data-v="">Все темы</button>${CATN.map((c,j)=>`<button class="chip ${wcat===c?'on':''}" data-a="wc" data-v="${c}">${c} ${n[j].length}</button>`).join('')}</div>`+(wcat?`<div class="btns"><button class="big" data-a="learn">Учить тему: ${wcat} (знаю ${n[k].filter(i=>S.st[i]===1).length} из ${n[k].length})</button></div>`:'')}
 
-/* ---- Telegram: тема и облачное сохранение ---- */
-var TG=null;try{if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData){TG=Telegram.WebApp;TG.ready();TG.expand();if(TG.colorScheme)document.documentElement.dataset.theme=TG.colorScheme}}catch(e){TG=null}
+/* ---- Telegram: облачное сохранение ---- */
+try{if(window.Telegram&&Telegram.WebApp&&Telegram.WebApp.initData){TG=Telegram.WebApp;TG.ready();TG.expand()}}catch(e){TG=null}
+applyTheme();
+if(TG)TG.onEvent('themeChanged',()=>{if(!S.theme){applyTheme();if(S.tab==='settings')rSettings()}});
 if(!S.ts&&Object.keys(S.st).length)S.ts=1;
 let cq=0;
 function cloudQ(){if(!TG||!TG.CloudStorage)return;clearTimeout(cq);cq=setTimeout(cloudPush,4000)}
@@ -242,7 +261,7 @@ function rPanel(){
   const t=dn(),q=S.dq.d===t?S.dq:{n:0,ok:0,rev:0,c:{}},c=HEAT.map((_,l)=>cnt(l)),lap=Object.values(S.sr).filter(r=>r[2]>=2).length;
   return `<h3 class="h3">Прожарка слов</h3><div class="stack">${c.map((x,l)=>`<i style="width:${x/D.length*100}%;background:${HEAT[l][1]}"></i>`).join('')}</div><div class="legend">${HEAT.map((h,l)=>`<span><i style="background:${h[1]}"></i>${h[0]}: ${c[l]}</span>`).join('')}</div><p class="hint">Часто забываются: ${lap}. К повторению сегодня: ${dueN()}.</p>
   <h3 class="h3">Квесты на сегодня</h3>${QS.map(([k,g,l,x])=>`<div class="qst ${q.c[k]?'dn':''}"><div class="qt"><span>${l}</span><b>${Math.min(q[k],g)}/${g}</b></div><div class="prog"><i style="width:${Math.min(q[k],g)/g*100}%"></i></div><span class="hint">Награда: ${x} очков</span></div>`).join('')}
-  <h3 class="h3">Награды</h3><div class="bgs">${BG.map(([e,l,f])=>`<div class="bg ${f()?'on':''}"><b>${e}</b><span>${l}</span></div>`).join('')}</div><p class="hint">Очки: ${S.xp}. Лучшая серия: ${S.best} дн. За каждую полную неделю подряд +100 очков.</p><h3 class="h3">Настройки</h3><button class="chip" data-a="sl">Строгость речи: ${['Мягко','Средне','Строго'][S.sl||0]}</button>`;
+  <h3 class="h3">Награды</h3><div class="bgs">${BG.map(([e,l,f])=>`<div class="bg ${f()?'on':''}"><b>${e}</b><span>${l}</span></div>`).join('')}</div><p class="hint">Очки: ${S.xp}. Лучшая серия: ${S.best} дн. За каждую полную неделю подряд +100 очков.</p>`;
 }
 
 /* ---- Карточки ---- */
@@ -379,7 +398,7 @@ function rBuild(){
   if(B.i>=B.list.length){$('#main').innerHTML=top+`<div class="done"><h2>${B.ok} из ${B.list.length}</h2><p class="hint">Ошибки попали в список «Не знаю».</p><button class="big" data-a="qs" data-v="${pool}">Ещё раунд</button></div>`;return}
   const [zh,py,ru]=B.ex,ck=B.chk!==null;
   const ans=B.ans.map(j=>`<button class="tile" data-a="at" data-v="${j}" ${ck?'disabled':''}>${B.bank[j]}</button>`).join('');
-  const bank=B.bank.map((t,j)=>B.ans.includes(j)?`<span class="tile ghost">${t}</span>`:`<button class="tile" data-a="bt" data-v="${j}" ${ck?'disabled':''}>${t}</button>`).join('');
+  const bank=B.bank.map((t,j)=>B.ans.includes(j)?`<span class="tile tile-placeholder">${t}</span>`:`<button class="tile" data-a="bt" data-v="${j}" ${ck?'disabled':''}>${t}</button>`).join('');
   const foot=ck?`<div class="ban ${B.chk?'ok':'bad'}"><div><b>${B.chk?'Верно':'Неверно'}</b><div>${zh} · ${py}</div></div><button class="chip" data-a="bspk" aria-label="Озвучить">🔊</button><button class="big" data-a="bnext">Дальше</button></div>`:`<div class="btns"><button class="big" data-a="bchk" ${B.ans.length?'':'disabled'}>Проверить</button></div>`;
   $('#main').innerHTML=top+`<div class="qh"><span>${B.i+1} из ${B.list.length}</span><span>Верно: ${B.ok}</span></div><div class="prog"><i style="width:${B.i/B.list.length*100}%"></i></div><div class="q"><div class="tr">${esc(ru)}</div></div><p class="hint" style="text-align:center">Составьте фразу из слов. Лишние слова не нужны.</p><div class="ansrow">${ans}</div><div class="bankrow">${bank}</div>${foot}`;
 }
@@ -637,16 +656,32 @@ function rWords(){
 }
 
 /* ---- Прогресс ---- */
-let rs=false,msg='';
+let rs=false,settingsMsg='';
 function rStats(){
   const v=Object.values(S.st),k=v.filter(x=>x===1).length,u=v.filter(x=>x===2).length,n=D.length-k-u,p=x=>x/D.length*100;
   $('#main').innerHTML=rPanel()+`<div class="st"><div><b style="color:var(--ok)">${k}</b><span>Знаю</span></div><div><b style="color:var(--bad)">${u}</b><span>Не знаю</span></div><div><b>${n}</b><span>Новые</span></div></div>
   <div class="stack"><i style="width:${p(k)}%;background:var(--ok)"></i><i style="width:${p(u)}%;background:var(--bad)"></i></div>
-  <p class="hint">Выучено ${Math.round(p(k))}% из ${D.length} слов</p>
-  <h3 class="h3">Перенос прогресса</h3><p class="hint left">Нажмите «Экспорт», скопируйте код и вставьте его на другом устройстве в это поле, затем нажмите «Импорт». Код включает статусы и заметки.</p>
-  <textarea id="io" class="io" placeholder="Код прогресса"></textarea>
-  <div class="btns"><button class="big" data-a="exp">Экспорт</button><button class="big" data-a="imp">Импорт</button></div><p class="hint">${msg}</p>
-  <button class="rst" data-a="reset">${rs?'Нажмите ещё раз, чтобы стереть прогресс':'Сбросить прогресс'}</button>`;
+  <p class="hint">Выучено ${Math.round(p(k))}% из ${D.length} слов</p>`;
+}
+function rSettings(){
+  const theme=S.theme||(TG&&TG.colorScheme)||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');
+  const levels=['Мягко','Средне','Строго'];
+  $('#main').innerHTML=`<h2>Настройки</h2>
+  <section class="settings-card"><h3>Оформление</h3><p class="hint">Выберите светлую или тёмную тему приложения.</p><div class="settings-options two">
+    <button class="chip ${theme==='light'?'on':''}" data-a="theme" data-v="light" aria-pressed="${theme==='light'}">☀️ Светлая</button>
+    <button class="chip ${theme==='dark'?'on':''}" data-a="theme" data-v="dark" aria-pressed="${theme==='dark'}">🌙 Тёмная</button>
+  </div></section>
+  <section class="settings-card"><h3>Строгость распознавания речи</h3><p class="hint">Чем строже режим, тем точнее нужно произнести слово.</p><div class="settings-options">
+    ${levels.map((label,i)=>`<button class="chip ${(S.sl||0)===i?'on':''}" data-a="sl" data-v="${i}" aria-pressed="${(S.sl||0)===i}">${label}</button>`).join('')}
+  </div></section>
+  <section class="settings-card"><h3>Перенос прогресса</h3><p class="hint">Экспортируйте код, чтобы перенести прогресс на другое устройство. На нём вставьте код сюда и нажмите «Импорт».</p>
+    <textarea id="io" class="io" placeholder="Код прогресса"></textarea>
+    <div class="btns"><button class="big" data-a="exp">Экспорт</button><button class="big" data-a="imp">Импорт</button></div>
+    <p class="hint" id="settings-msg" role="status">${settingsMsg}</p>
+  </section>
+  <section class="settings-card"><h3>Сброс прогресса</h3><p class="hint">Удалит отметки изучения, статистику повторений и очки на этом устройстве.</p>
+    <button class="rst" data-a="reset">${rs?'Нажмите ещё раз, чтобы подтвердить сброс':'Сбросить прогресс'}</button>
+  </section>`;
 }
 
 function go(){bar();{const x=$('#ext');if(x)x.hidden=!(TG&&S.tab==='speak')}
@@ -659,6 +694,7 @@ function go(){bar();{const x=$('#ext');if(x)x.hidden=!(TG&&S.tab==='speak')}
   else if(S.tab==='speak'){if(!sd.length&&sp===0)mkS();startWord()}
   else if(S.tab==='tone'){T?rTone():tNew()}
   else if(S.tab==='words')rWords();
+  else if(S.tab==='settings')rSettings();
   else rStats();
 }
 document.addEventListener('click',e=>{
@@ -666,9 +702,9 @@ document.addEventListener('click',e=>{
   if(a==='section'){
     const section=b.dataset.section;
     S.tab=section==='learn'?'cards':section==='practice'?(['quiz','write','speak','tone'].includes(S.tab)?S.tab:'quiz'):section;
-    save();rs=false;msg='';go()
+    save();rs=false;settingsMsg='';go()
   }
-  else if(a==='tab'){S.tab=v;save();rs=false;msg='';go()}
+  else if(a==='tab'){S.tab=v;save();rs=false;settingsMsg='';go()}
   else if(a==='f'){S.f=v;save();if(S.tab==='write'){mkW();rWrite()}else if(S.tab==='speak'){mkS();startWord()}else{mk();rCards()}}
   else if(a==='dir'){S.dir=1-S.dir;save();S.tab==='quiz'?startQ():rCards()}
   else if(a==='no')ans(false);
@@ -722,22 +758,22 @@ document.addEventListener('click',e=>{
   else if(a==='tnew'){tNew();rTone()}
   else if(a==='tm'){S.tm=v;save();T=null;go()}
   else if(a==='sm'){S.sm=v;save();sd=[];sp=0;go()}
-  else if(a==='sl'){S.sl=((S.sl||0)+1)%3;save();S.tab==='speak'?rSpeak():go()}
+  else if(a==='sl'){S.sl=+v;save();rSettings()}
+  else if(a==='theme'){S.theme=v;save();applyTheme();rSettings()}
   else if(a==='ext'){try{TG.openLink(location.href)}catch(_){}}
   else if(a==='exp'){
     const code=btoa(unescape(encodeURIComponent(JSON.stringify({st:S.st,notes:S.notes||{},sr:S.sr,xp:S.xp,days:S.days,best:S.best}))));
-    const io=$('#io');io.value=code;io.select();
-    const m=document.querySelectorAll('.hint');const h=m[m.length-1];
-    try{navigator.clipboard.writeText(code).then(()=>{h.textContent='Код скопирован.'},()=>{h.textContent='Скопируйте код из поля вручную.'})}catch(_){h.textContent='Скопируйте код из поля вручную.'}
+    const io=$('#io'),status=$('#settings-msg');io.value=code;io.select();settingsMsg='Скопируйте код или воспользуйтесь кнопкой копирования браузера.';
+    try{navigator.clipboard.writeText(code).then(()=>{if(status)status.textContent='Код скопирован.'},()=>{if(status)status.textContent=settingsMsg})}catch(_){if(status)status.textContent=settingsMsg}
   }
   else if(a==='imp'){
     try{const o=JSON.parse(decodeURIComponent(escape(atob($('#io').value.trim()))));
       if(!o||typeof o.st!=='object')throw 0;
-      S.st=o.st;S.notes=o.notes||{};S.sr=o.sr||{};S.xp=o.xp||0;S.days=o.days||{};S.best=o.best||0;S.ts=Date.now();if(!o.sr){const t=dn();for(const i in S.st)S.sr[i]=S.st[i]===1?[1,t+1,0]:[0,t,0]}save();deck=[];pos=0;Q=null;wd=[];wp=0;msg='Загружено слов с отметкой: '+Object.keys(S.st).length;
-    }catch(_){msg='Код не подошёл. Проверьте, что он скопирован целиком.'}
-    rStats();
+      S.st=o.st;S.notes=o.notes||{};S.sr=o.sr||{};S.xp=o.xp||0;S.days=o.days||{};S.best=o.best||0;S.ts=Date.now();if(!o.sr){const t=dn();for(const i in S.st)S.sr[i]=S.st[i]===1?[1,t+1,0]:[0,t,0]}save();deck=[];pos=0;Q=null;wd=[];wp=0;settingsMsg='Загружено слов с отметкой: '+Object.keys(S.st).length;
+    }catch(_){settingsMsg='Код не подошёл. Проверьте, что он скопирован целиком.'}
+    rSettings();
   }
-  else if(a==='reset'){if(rs){S.st={};S.sr={};S.xp=0;S.days={};S.best=0;S.dq={};S.wkb=0;S.ts=Date.now();save();rs=false;deck=[];pos=0;Q=null;wd=[];wp=0;sd=[];sp=0}else rs=true;rStats()}
+  else if(a==='reset'){if(rs){S.st={};S.sr={};S.xp=0;S.days={};S.best=0;S.dq={};S.wkb=0;S.ts=Date.now();save();rs=false;deck=[];pos=0;Q=null;wd=[];wp=0;sd=[];sp=0;settingsMsg='Прогресс сброшен.'}else{rs=true;settingsMsg='Нажмите ещё раз, чтобы подтвердить сброс.'}rSettings()}
 });
 document.addEventListener('input',e=>{
   const t=e.target;if(!t.matches||!t.matches('textarea[data-i]'))return;
