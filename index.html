@@ -67,9 +67,8 @@ nav button.on{background:var(--pri);color:var(--onpri)}
 .wq{text-align:center;margin-top:10px}
 .pad{position:relative;width:100%;aspect-ratio:1.25;background-color:var(--card);border:2px solid var(--line);border-radius:18px;overflow:hidden;margin:10px 0;background-image:linear-gradient(var(--line),var(--line)),linear-gradient(var(--line),var(--line));background-size:1px 100%,100% 1px;background-position:center;background-repeat:no-repeat}
 .pad canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
-.ghost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Songti SC","Noto Serif SC",serif;font-weight:700;color:var(--pri);opacity:0;transform:scale(.94);transition:opacity .35s,transform .45s cubic-bezier(.2,.8,.2,1),filter .4s;pointer-events:none;white-space:nowrap}
-.ghost.on{opacity:.35;transform:scale(1)}
-.ghost.mastered{opacity:1;filter:none}
+.ghost{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:"Songti SC","Noto Serif SC",serif;font-weight:700;color:var(--pri);opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
+.ghost.on{opacity:.4}
 .sq{width:100%;min-height:48px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:12px;padding:12px 14px;font:16px inherit;margin:4px 0 8px}
 .row{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:7px 0}
 .row summary{display:flex;align-items:center;gap:10px;padding:10px 12px;list-style:none;cursor:pointer}
@@ -135,6 +134,23 @@ button:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
   .tbtns.t5{grid-template-columns:repeat(5,minmax(0,1fr))}
 }
 .spk-card .py.big{overflow-wrap:anywhere}.hintbox .hz{font-size:clamp(30px,9vw,56px);overflow-wrap:anywhere}
+/* компактный вид (удалите этот блок, чтобы вернуть крупные элементы) */
+button{min-height:0}
+.chip{min-height:38px;padding:7px 13px;font-size:14px}
+.chips{margin:8px 0 6px;gap:6px}
+.subnav{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:2px 0 8px}
+.subnav button{min-height:40px;padding:8px 2px;font-size:14px;border-radius:11px}
+.qm-switch{grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.qm-switch.pair-switch{grid-template-columns:repeat(2,minmax(0,1fr))}
+.qm-switch .chip{min-height:40px;padding:6px 2px;font-size:14px;border-radius:11px}
+.write-modes{gap:6px;margin:8px 0}
+.write-modes .chip{min-height:42px;padding:6px 4px;border-width:1px}
+.btns button,.big{padding:13px}
+.opt{padding:12px}.opts{gap:8px}
+.q{padding:14px 0 8px;min-height:110px}
+.tbtn{min-height:72px}.tsl{min-width:64px;min-height:64px}
+.mtile{min-height:58px}.done{padding:36px 10px}.h3{margin:20px 0 6px}
+.dot{width:40px;height:40px}.spk-card{min-height:200px}
 </style></head><body>
 <div id="app">
 <nav aria-label="Основная навигация">
@@ -160,18 +176,16 @@ loadV();try{speechSynthesis.onvoiceschanged=loadV}catch(e){}
 function toast(m){let t=$('#toast');if(!t){t=document.createElement('div');t.id='toast';document.body.appendChild(t)}t.textContent=m;t.className='on';clearTimeout(toast.h);toast.h=setTimeout(()=>{t.className=''},7000)}
 const NOVOICE='На устройстве не найден китайский голос. Android: Настройки → Синтез речи → Google → язык «Китайский». iPhone: Настройки → Универсальный доступ → Устный контент → Голоса → Китайский.';
 let muteUntil=0;
-function say(i,txt,onDone){
-  let finished=false;
-  const finish=()=>{if(finished)return;finished=true;if(onDone)onDone()};
+function say(i,txt){
   muteUntil=Date.now()+3000;
-  if(!('speechSynthesis' in window)){toast('Этот браузер не поддерживает озвучку. Попробуйте Chrome или Safari.');finish();return}
+  if(!('speechSynthesis' in window)){toast('Этот браузер не поддерживает озвучку. Попробуйте Chrome или Safari.');return}
   loadV();
   const v=VZ.find(x=>/^zh[-_]CN/i.test(x.lang))||VZ.find(x=>/^zh/i.test(x.lang))||VZ.find(x=>/cmn|chinese|mandarin/i.test(x.lang+' '+x.name));
   if(VZ.length&&!v){toast(NOVOICE)}
   const u=new SpeechSynthesisUtterance(txt||D[i][0]);
-  u.lang=v?v.lang:'zh-CN';if(v)u.voice=v;u.rate=.8;u.onend=()=>{muteUntil=Date.now()+150;finish()};
-  u.onerror=ev=>{if(ev.error&&ev.error!=='canceled'&&ev.error!=='interrupted')toast(NOVOICE);finish()};
-  try{if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();speechSynthesis.resume();speechSynthesis.speak(u)}catch(e){toast(NOVOICE);finish()}
+  u.lang=v?v.lang:'zh-CN';if(v)u.voice=v;u.rate=.8;u.onend=()=>{muteUntil=Date.now()+700};
+  u.onerror=ev=>{if(ev.error&&ev.error!=='canceled'&&ev.error!=='interrupted')toast(NOVOICE)};
+  try{if(speechSynthesis.speaking||speechSynthesis.pending)speechSynthesis.cancel();speechSynthesis.resume();speechSynthesis.speak(u)}catch(e){toast(NOVOICE)}
 }
 const dirChip=()=>`<button class="chip" data-a="dir">${S.dir?'Рус → 汉':'汉 → Рус'}</button>`+catChip();
 const all=()=>D.map((_,i)=>i);
@@ -468,41 +482,14 @@ function pzTap(j){
 function bindW(){
   const cv=$('#cv');if(!cv)return;
   const r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;cv.width=r.width*d;cv.height=r.height*d;
-  const g=cv.getContext('2d');g.scale(d,d);
+  const g=cv.getContext('2d');g.scale(d,d);g.lineWidth=7;g.lineCap='round';g.lineJoin='round';
   g.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--ink').trim()||'#000';
-  const strokes=[];
-  let active=null;
-  const pt=e=>{const b=cv.getBoundingClientRect();return{x:e.clientX-b.left,y:e.clientY-b.top,t:e.timeStamp||performance.now()}};
-  const paint=()=>{
-    g.clearRect(0,0,r.width,r.height);
-    g.fillStyle=g.strokeStyle;
-    for(const points of strokes){
-      if(points.length===1){g.beginPath();g.arc(points[0].x,points[0].y,3.5,0,Math.PI*2);g.fill();continue}
-      const lengths=[0];
-      for(let i=1;i<points.length;i++)lengths.push(lengths[i-1]+Math.hypot(points[i].x-points[i-1].x,points[i].y-points[i-1].y));
-      const total=lengths[lengths.length-1];
-      if(!total)continue;
-      for(let i=1;i<points.length;i++){
-        const a=points[i-1],b=points[i],len=lengths[i]-lengths[i-1];
-        if(!len)continue;
-        const speed=len/Math.max(1,b.t-a.t);
-        const speedFactor=Math.max(.55,Math.min(1.2,1.15-speed*.3));
-        const steps=Math.max(1,Math.ceil(len/2));
-        for(let j=0;j<=steps;j++){
-          const f=j/steps,dist=lengths[i-1]+len*f,progress=dist/total;
-          const endTaper=Math.min(1,(total-dist)/12);
-          const width=8.5*speedFactor*(1-.68*progress)*endTaper;
-          if(width<=.15)continue;
-          const x=a.x+(b.x-a.x)*f,y=a.y+(b.y-a.y)*f;
-          g.beginPath();g.arc(x,y,width/2,0,Math.PI*2);g.fill();
-        }
-      }
-    }
-  };
-  cv.onpointerdown=e=>{e.preventDefault();active=[pt(e)];strokes.push(active);try{cv.setPointerCapture(e.pointerId)}catch(_){}paint()};
-  cv.onpointermove=e=>{if(!active)return;e.preventDefault();const p=pt(e),last=active[active.length-1];if(Math.hypot(p.x-last.x,p.y-last.y)>=.5){active.push(p);paint()}};
-  cv.onpointerup=cv.onpointercancel=()=>{active=null;paint()};
-  cv.clear=()=>{strokes.length=0;active=null;paint()};
+  let on=false,lx=0,ly=0;
+  const pt=e=>{const b=cv.getBoundingClientRect();return[e.clientX-b.left,e.clientY-b.top]};
+  cv.onpointerdown=e=>{on=true;[lx,ly]=pt(e);try{cv.setPointerCapture(e.pointerId)}catch(_){}g.beginPath();g.arc(lx,ly,3.5,0,7);g.fillStyle=g.strokeStyle;g.fill()};
+  cv.onpointermove=e=>{if(!on)return;const[x,y]=pt(e);g.beginPath();g.moveTo(lx,ly);g.lineTo(x,y);g.stroke();lx=x;ly=y};
+  cv.onpointerup=cv.onpointercancel=()=>{on=false};
+  cv.clear=()=>g.clearRect(0,0,r.width,r.height);
 }
 const maskOf=(c,w,h,th)=>{const d=c.getImageData(0,0,w,h).data,m=new Uint8Array(w*h);for(let i=0;i<m.length;i++)m[i]=d[i*4+3]>th?1:0;return m};
 const bbox=(m,w,h)=>{let x0=w,y0=h,x1=-1,y1=-1;for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(m[y*w+x]){if(x<x0)x0=x;if(x>x1)x1=x;if(y<y0)y0=y;if(y>y1)y1=y}return x1<0?null:[x0,y0,x1,y1]};
@@ -514,30 +501,26 @@ function dil(m,w,h,r){
 }
 /* Сравнение формы: рисунок и эталон приводятся к одной рамке, затем считается F1 покрытия и точности с допуском */
 function match(cv,text){
-  const W=120,H=96,r=2;
+  const W=120,H=96,r=5;
   const u=document.createElement('canvas');u.width=W;u.height=H;const uc=u.getContext('2d');uc.drawImage(cv,0,0,W,H);
   const U=maskOf(uc,W,H,20),ub=bbox(U,W,H);if(!ub)return 0;
   const t=document.createElement('canvas');t.width=W;t.height=H;const tc=t.getContext('2d');
   tc.font=`700 ${Math.min(H*.85,W*.9/text.length)}px "Songti SC","Noto Serif SC","Source Han Serif SC",serif`;tc.textAlign='center';tc.textBaseline='middle';tc.fillText(text,W/2,H/2);
   const T=maskOf(tc,W,H,100),tb=bbox(T,W,H);if(!tb)return 0;
   const uw=Math.max(1,ub[2]-ub[0]),uh=Math.max(1,ub[3]-ub[1]),tw=Math.max(1,tb[2]-tb[0]),th=Math.max(1,tb[3]-tb[1]),V=new Uint8Array(W*H);
-  const scale=Math.min(tw/uw,th/uh),dw=uw*scale,dh=uh*scale;
-  const dx=(tb[0]+tb[2]-dw)/2,dy=(tb[1]+tb[3]-dh)/2;
-  for(let y=Math.max(tb[1],Math.floor(dy));y<=Math.min(tb[3],Math.ceil(dy+dh));y++)for(let x=Math.max(tb[0],Math.floor(dx));x<=Math.min(tb[2],Math.ceil(dx+dw));x++){
-    const sx=Math.round(ub[0]+(x-dx)/scale),sy=Math.round(ub[1]+(y-dy)/scale);
-    if(sx>=0&&sx<W&&sy>=0&&sy<H&&U[sy*W+sx])V[y*W+x]=1;
+  for(let y=tb[1];y<=tb[3];y++)for(let x=tb[0];x<=tb[2];x++){
+    const sx=Math.round(ub[0]+(x-tb[0])/tw*uw),sy=Math.round(ub[1]+(y-tb[1])/th*uh);
+    if(U[sy*W+sx])V[y*W+x]=1;
   }
-  const Td=dil(T,W,H,r),Vd=dil(V,W,H,r);let tn=0,tk=0,vn=0,vk=0,raw=0;
-  for(let i=0;i<W*H;i++){if(T[i]){tn++;if(Vd[i])tk++;if(V[i])raw++}if(V[i]){vn++;if(Td[i])vk++}}
+  const Td=dil(T,W,H,r),Vd=dil(V,W,H,r);let tn=0,tk=0,vn=0,vk=0;
+  for(let i=0;i<W*H;i++){if(T[i]){tn++;if(Vd[i])tk++}if(V[i]){vn++;if(Td[i])vk++}}
   const c=tn?tk/tn:0,p=vn?vk/vn:0;
-  if(!c||!p)return 0;
-  const f1=2*c*p/(c+p),inkFactor=Math.min(1,vn/(tn*.3)),coverageFactor=Math.min(1,raw/(tn*.22));
-  return Math.round(100*f1*Math.min(inkFactor,coverageFactor));
+  return c+p?Math.round(200*c*p/(c+p)):0;
 }
 function wans(k){S.st[wd[wp]]=k?1:2;grade(wd[wp],k);wp++;rWrite()}
 
 /* ---- Речь ---- */
-let sd=[],sp=0,rec=null,G={tries:0,res:null,pass:false,on:false},promptSpeaking=false,promptToken=0;
+let sd=[],sp=0,rec=null,G={tries:0,res:null,pass:false,on:false};
 const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
 let SX={};
 function mkS(){
@@ -546,7 +529,7 @@ function mkS(){
   sp=0;
 }
 const cur=()=>{const i=sd[sp];return S.sm==='ph'&&SX[i]?SX[i]:D[i]};
-const sayCur=onDone=>{const i=sd[sp];S.sm==='ph'&&SX[i]?say(i,SX[i][0],onDone):say(i,undefined,onDone)};
+const sayCur=()=>{const i=sd[sp];S.sm==='ph'&&SX[i]?say(i,SX[i][0]):say(i)};
 const smChips=()=>[['wd','Слова'],['ph','Фразы']].map(([k,l])=>`<button class="chip ${(S.sm||'wd')===k?'on':''}" data-a="sm" data-v="${k}">${l}</button>`).join('');
 const toSyl=t=>[...clean(t)].map(c=>PYM[c]||c);
 const sylSim=(a,b)=>a===b?1:Math.max(0,1-lev(a,b)/Math.max(a.length,b.length));
@@ -557,18 +540,9 @@ function sylScore(a,b){
   return Math.max(0,1-d[m][n]/Math.max(m,n,1));
 }
 function startWord(){
-  micStop(false);
-  promptToken++;
-  promptSpeaking=false;
-  G={tries:0,res:null,pass:false,on:false};
-  if(sp<sd.length)playPrompt();
-  else rSpeak();
-}
-function playPrompt(){
-  if(sp>=sd.length||wantMic||promptSpeaking)return;
-  const token=++promptToken;
-  promptSpeaking=true;G.res=null;rSpeak();
-  sayCur(()=>{if(token!==promptToken)return;promptSpeaking=false;if(S.tab==='speak')rSpeak()});
+  G={tries:0,res:null,pass:false,on:wantMic};
+  if(sp<sd.length)sayCur();
+  rSpeak();
 }
 function rSpeak(){
   if(S.tab!=='speak')return;
@@ -586,9 +560,9 @@ function rSpeak(){
     h+=`<div class="cnt">${sp+1} из ${sd.length}</div>
     <div class="spk-card"><div class="py big">${p}</div><div class="hintbox">${rv?`<div class="hz">${c}</div><div class="tr">${esc(t)}</div>`:`<div class="hint">${G.on?'Слушаю… говорите':'Послушайте слово и повторите вслух'}</div>`}</div></div>
     ${ban}
-    <div class="btns" style="margin-top:12px"><button class="clr" data-a="sspk" ${G.on||promptSpeaking?'disabled':''}>🔊 Слушать</button>${G.pass?'<button class="big" data-a="snext">Дальше</button>':`<button class="${G.on?'no':'yes'}" data-a="smic" ${promptSpeaking?'disabled':''}>${G.on?'⏹ Выключить микрофон':'🎤 Включить микрофон'}</button>`}</div>
+    <div class="btns" style="margin-top:12px"><button class="clr" data-a="sspk">🔊 Слушать</button>${G.pass?'<button class="big" data-a="snext">Дальше</button>':`<button class="${G.on?'no':'yes'}" data-a="smic">${G.on?'⏹ Выключить микрофон':'🎤 Включить микрофон'}</button>`}</div>
     ${!G.pass&&G.tries>=3?'<button class="skip" data-a="sskip">Пропустить слово</button>':''}
-    <p class="hint">${G.on?'Говорите в микрофон. Для прослушивания слова сначала выключите микрофон.':promptSpeaking?'Слушайте произношение. Кнопка микрофона станет доступна после окончания озвучки.':'Озвучивание не засчитывается как ответ. Нажмите «Включить микрофон», чтобы произнести слово; при переходе к следующему слову микрофон выключится.'} После двух ошибок появится подсказка.</p>`;
+    <p class="hint">Включите микрофон один раз: он слушает, пока вы на этой вкладке. Пока слово не произнесено правильно, дальше не пустит. После двух ошибок появится подсказка.</p>`;
   }
   $('#main').innerHTML=h;
 }
@@ -608,47 +582,34 @@ function judge(alts){
 let wantMic=false;
 const same=(t,g)=>t===g||(t.length>g.length&&t.length%g.length===0&&g.repeat(t.length/g.length)===t);
 function micStart(){
-  if(promptSpeaking||G.pass||wantMic)return;
   if(!SR){G.res={err:1,msg:'Этот браузер не умеет распознавать речь. Откройте приложение в Chrome (Android, компьютер) или Safari (iPhone).'};rSpeak();return}
   wantMic=true;G.on=true;G.res=null;rSpeak();
-  try{makeRec()}catch(_){wantMic=false;G.on=false;rec=null;G.res={err:1,msg:'Не удалось включить микрофон.'};rSpeak()}
+  try{makeRec()}catch(_){wantMic=false;G.on=false;G.res={err:1,msg:'Не удалось включить микрофон.'};rSpeak()}
 }
-function micStop(render=true){
-  wantMic=false;G.on=false;
-  const active=rec;rec=null;
-  if(active)try{active.abort()}catch(_){}
-  if(render&&S.tab==='speak')rSpeak();
-}
+function micStop(){wantMic=false;G.on=false;try{if(rec)rec.abort()}catch(_){}rSpeak()}
 function makeRec(){
-  const current=new SR();rec=current;current.lang='zh-CN';current.continuous=true;current.interimResults=false;current.maxAlternatives=5;
-  current.onresult=e=>{
-    if(rec!==current||!wantMic)return;
+  rec=new SR();rec.lang='zh-CN';rec.continuous=true;rec.interimResults=false;rec.maxAlternatives=5;
+  rec.onresult=e=>{
     let used=false;
     for(let k=e.resultIndex;k<e.results.length;k++){
       const r=e.results[k];
-      if(!r.isFinal||S.tab!=='speak'||G.pass||sp>=sd.length||promptSpeaking||speechSynthesis.speaking||Date.now()<muteUntil)continue;
+      if(!r.isFinal||S.tab!=='speak'||G.pass||sp>=sd.length||speechSynthesis.speaking||Date.now()<muteUntil)continue;
       judge([...r].map(a=>[a.transcript,a.confidence]));used=true;
-      if(G.pass)break;
     }
-    if(G.pass)micStop(false);
     if(used)rSpeak();
   };
-  current.onerror=e=>{
-    if(rec!==current)return;
+  rec.onerror=e=>{
     if(e.error==='no-speech'||e.error==='aborted')return;
     wantMic=false;G.on=false;
-    rec=null;
     G.res={err:1,msg:e.error==='not-allowed'||e.error==='service-not-allowed'?'Нет доступа к микрофону. В Chrome нажмите на значок слева от адреса, откройте «Разрешения» и включите микрофон. Если страница открыта внутри другого приложения, откройте её в самом Chrome.':e.error==='network'?'Нет связи с сервисом распознавания речи.':'Не удалось распознать. Попробуйте ещё раз.'};
     rSpeak();
   };
-  current.onend=()=>{
-    if(rec!==current)return;
-    rec=null;
+  rec.onend=()=>{
     if(wantMic&&S.tab==='speak'){
       setTimeout(()=>{if(wantMic&&S.tab==='speak'){try{makeRec()}catch(_){wantMic=false;G.on=false;rSpeak()}}},250);
     }else if(G.on){G.on=false;rSpeak()}
   };
-  current.start();
+  rec.start();
 }
 
 /* ---- Слова ---- */
@@ -689,8 +650,7 @@ function rStats(){
 }
 
 function go(){bar();{const x=$('#ext');if(x)x.hidden=!(TG&&S.tab==='speak')}
-  micStop(false);promptToken++;promptSpeaking=false;
-  try{if('speechSynthesis' in window&&(speechSynthesis.speaking||speechSynthesis.pending))speechSynthesis.cancel()}catch(_){}
+  wantMic=false;try{if(rec)rec.abort()}catch(_){}
   const section=['quiz','write','speak','tone'].includes(S.tab)?'practice':S.tab==='cards'?'learn':S.tab;
   document.querySelectorAll('nav button').forEach(b=>{const active=b.dataset.section===section;b.classList.toggle('on',active);if(active)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
   if(S.tab==='cards'){if(!deck.length&&pos===0)mk();rCards()}
@@ -720,21 +680,17 @@ document.addEventListener('click',e=>{
   else if(a==='wshow'){
     const pc=match($('#cv'),D[wd[wp]][0]),sc=$('#sc');
     sc.className='ban '+(pc>=60?'ok':'bad');
-    sc.innerHTML=`<div><b style="font-size:22px">Совпадение ${pc}%</b><div>${pc>75?'Отлично, форма очень похожа':pc>=50?'Неплохо, форма похожа':pc?'Пока не похоже, попробуйте ещё раз':'Вы ничего не нарисовали'}</div></div>`;
-    sc.hidden=false;say(wd[wp]);
-    const gh=$('#gh');
-    if(pc>75){$('#cv').clear();gh.classList.add('on','mastered')}
-    else{gh.classList.add('on');gh.classList.remove('mastered')}
-    $('#b1').hidden=true;$('#b2').hidden=false}
+    sc.innerHTML=`<div><b style="font-size:22px">Совпадение ${pc}%</b><div>${pc>=75?'Отлично, форма очень похожа':pc>=50?'Неплохо, форма похожа':pc?'Пока не похоже, попробуйте ещё раз':'Вы ничего не нарисовали'}</div></div>`;
+    sc.hidden=false;say(wd[wp]);$('#gh').classList.add('on');$('#b1').hidden=true;$('#b2').hidden=false}
   else if(a==='wclr'){$('#cv').clear()}
   else if(a==='wyes')wans(true);
   else if(a==='wno')wans(false);
   else if(a==='wagain'){mkW();rWrite()}
   else if(a==='ws'){ws=v;rWords()}
-  else if(a==='sspk'){if(!wantMic&&!promptSpeaking)playPrompt()}
+  else if(a==='sspk')sayCur();
   else if(a==='smic')wantMic?micStop():micStart();
-  else if(a==='snext'){micStop(false);sp++;startWord()}
-  else if(a==='sskip'){micStop(false);S.st[sd[sp]]=2;grade(sd[sp],false);sp++;startWord()}
+  else if(a==='snext'){sp++;startWord()}
+  else if(a==='sskip'){S.st[sd[sp]]=2;grade(sd[sp],false);sp++;startWord()}
   else if(a==='sagain'){mkS();startWord()}
   else if(a==='cyc'){e.preventDefault();const i=+v,n=((S.st[i]||0)+1)%3;if(n===0)delete S.st[i];else S.st[i]=n;S.ts=Date.now();save();b.className='dot s'+n;b.textContent=DOT[n]}
   else if(a==='spk2')say(+v);
