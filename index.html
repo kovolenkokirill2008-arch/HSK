@@ -178,7 +178,7 @@ nav button.act .cf{animation:flip .6s}nav button.act .gear{animation:spin .8s ea
 @keyframes pop{0%{transform:scale(.7)}60%{transform:scale(1.12)}100%{transform:scale(1)}}
 @keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @keyframes flip{0%{transform:scaleX(1)}50%{transform:scaleX(0)}100%{transform:scaleX(1)}}
-@keyframes spin{from{transform:rotate(0)}to{transform:rotate(180deg)}}
+@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
 @media(max-width:899px){
   nav{display:block;height:60px;padding:0}
   nav button{position:absolute;top:0;left:0;width:20%;height:100%;padding:0 0 6px;border-radius:0;justify-content:flex-end;gap:3px;background:none;transition:left .5s cubic-bezier(.34,1.3,.5,1),color .3s}
@@ -193,7 +193,7 @@ nav button.act .cf{animation:flip .6s}nav button.act .gear{animation:spin .8s ea
 #main.enter{animation:enter .28s ease-out}
 @keyframes enter{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .stage{perspective:900px}
-.card.a-flip{animation:cflip .45s ease-out}.card.a-in{animation:cin .3s ease-out}
+.card.a-flip{animation:cflip .8s ease-in-out}.card.a-in{animation:cin .3s ease-out}
 @keyframes cflip{from{transform:rotateY(90deg)}to{transform:rotateY(0)}}
 @keyframes cin{from{opacity:0;transform:translateY(20px) scale(.95)}to{opacity:1;transform:none}}
 .mtile.just,.opt.ok{animation:jpop .4s}
